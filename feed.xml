@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Paul Tinker — AI-native products &amp; design systems</title>
+    <title>Paul Tinker AI log</title>
     <link>https://ai.paultinker.uk/</link>
     <atom:link href="https://ai.paultinker.uk/feed.xml" rel="self" type="application/rss+xml"/>
     <description>A working log of designing and building digital products with AI: design systems rebuilt in code, products shipped end to end, and what changes when AI is part of the system.</description>
