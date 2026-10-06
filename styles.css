@@ -1,0 +1,389 @@
+/* ai.paultinker.uk — styles
+   Matches the current Carrd page: DM Serif Text headings, DM Sans body,
+   #2b2b2b text on white, #004b87 accent, 3-4px corners, 1px #b8b8b8 dividers.
+
+   Type scale (16px root):
+     body 18px / 1.6 (17px on phones)    standfirst 20px italic    meta 16px    back link and footer 18px
+     entry title 40px (32px on phones)   site title 56px, subtitle 28px (smaller on phones)
+     sidebar links 17px
+   Line length is held to roughly 70 characters. */
+
+/* Fonts are served from the site itself (Latin subset of Google's DM Sans and DM Serif Text). */
+@font-face { font-family: "DM Sans"; font-style: normal; font-weight: 100 1000; font-display: swap; src: url(/assets/fonts/dm-sans.woff2) format("woff2"); }
+@font-face { font-family: "DM Sans"; font-style: italic; font-weight: 100 1000; font-display: swap; src: url(/assets/fonts/dm-sans-italic.woff2) format("woff2"); }
+@font-face { font-family: "DM Serif Text"; font-style: normal; font-weight: 400; font-display: swap; src: url(/assets/fonts/dm-serif-text.woff2) format("woff2"); }
+@font-face { font-family: "DM Serif Text"; font-style: italic; font-weight: 400; font-display: swap; src: url(/assets/fonts/dm-serif-text-italic.woff2) format("woff2"); }
+/* Product fonts, used only inside that product's carousels: Inter for Kavvi, Poppins for Edgey, Fraunces for Bridge. */
+@font-face { font-family: "Inter"; font-weight: 400; font-display: swap; src: url(/assets/fonts/inter-400.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; font-display: swap; src: url(/assets/fonts/inter-700.woff2) format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 400; font-display: swap; src: url(/assets/fonts/poppins-400.woff2) format("woff2"); }
+@font-face { font-family: "Poppins"; font-weight: 600; font-display: swap; src: url(/assets/fonts/poppins-600.woff2) format("woff2"); }
+@font-face { font-family: "Fraunces"; font-weight: 400; font-display: swap; src: url(/assets/fonts/fraunces-400.woff2) format("woff2"); }
+@font-face { font-family: "Fraunces"; font-weight: 700; font-display: swap; src: url(/assets/fonts/fraunces-700.woff2) format("woff2"); }
+
+:root {
+  --ink: #2b2b2b;
+  --black: #000;
+  --muted: #5c5c5c;
+  --accent: #004b87;
+  --rule: #b8b8b8;
+  --soft: #f6f6f6;
+  --soft-line: #e3e3e3;
+  --pill: #ececec;
+  --serif: "DM Serif Text", serif;
+  --sans: "DM Sans", sans-serif;
+}
+
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+[hidden] { display: none !important; }
+
+a { color: inherit; text-decoration: underline; text-underline-offset: 0.16em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.not-found { margin: 0 0 2rem; padding: 0.75rem 1rem; border-left: 3px solid var(--accent); background: var(--soft); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* Arrow-out-of-box icon on links that open a new tab */
+.ext { display: inline-block; width: 1em; height: 1em; margin-left: 0.3em; vertical-align: -0.12em; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.btn .ext { margin-left: 0.5em; }
+
+.skip {
+  position: absolute; left: -999px; top: 0;
+  background: var(--accent); color: #fff; padding: 0.5rem 1rem; z-index: 10;
+}
+.skip:focus { left: 0; }
+
+/* ---------- Layout ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: 17rem minmax(0, 44rem);
+  column-gap: 4rem;
+  justify-content: center;
+  max-width: 88rem;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+}
+
+.main { min-width: 0; }
+
+/* One column: text and images share the same edges, so nothing overhangs.
+   Click an image to see it full size. */
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+}
+
+.back { font-size: 1.125rem; color: var(--accent); }
+
+/* Title section across the top of the page */
+.masthead {
+  grid-column: 1 / -1;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.site-title {
+  margin: 1.5rem 0 0.75rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 3.5rem;
+  line-height: 1.05;
+  color: var(--black);
+  max-width: 18em;
+}
+.site-title a { color: inherit; text-decoration: none; }
+.site-title a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.site-sub {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.75rem;
+  line-height: 1.35;
+  color: var(--black);
+  max-width: 36em;
+}
+.site-intro {
+  margin: 1.25rem 0 0;
+  max-width: 44em;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.site-intro a { color: var(--accent); }
+
+.nav-label { font-family: var(--sans); line-height: 1.6; margin: 0 0 0.5rem 0.75rem; font-size: 0.9375rem; font-weight: 700; color: var(--black); }
+.nav ul { list-style: none; margin: 0; padding: 0; }
+.nav li { margin: 0 0 0.125rem; }
+.nav a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  color: var(--muted);
+  text-decoration: none;
+}
+.nav a:hover { background: #f3f3f3; color: var(--black); }
+.nav a[aria-current="page"] { background: var(--pill); color: var(--black); font-weight: 700; }
+
+.nav-toggle { display: none; }
+
+/* ---------- Entry ---------- */
+
+.entry > header { margin-bottom: 1.5rem; }
+.entry h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1.15;
+  color: var(--black);
+}
+.summary { margin: 0; font-size: 1.25rem; line-height: 1.5; font-style: italic; }
+
+.meta {
+  list-style: none;
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  margin: 0 0 1.75rem; padding: 0;
+}
+.meta li {
+  padding: 0.3rem 0.85rem;
+  border: 1px solid var(--soft-line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.meta a { color: var(--accent); }
+
+.entry p { margin: 0 0 1.25rem; }
+.entry strong { font-weight: 700; }
+
+.also-label { margin-bottom: 0.5rem !important; }
+.bullets { list-style: none; margin: 0 0 1.25rem; padding: 0; }
+.bullets li { position: relative; margin: 0 0 0.6rem; padding-left: 1.1em; }
+.bullets li::before { content: "\2022"; position: absolute; left: 0.15em; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 2.5rem; padding: 0 1.25rem;
+  background: var(--accent); color: #fff;
+  border-radius: 0.25rem;
+  font-size: 1rem; text-decoration: none; white-space: nowrap;
+}
+.btn:hover { background: #003a6a; text-decoration: none; }
+
+/* Media */
+.media { margin: 1.75rem 0; }
+.media img, .media video { display: block; width: 100%; height: auto; }
+.media video { background: #000; }
+.js .media img { cursor: zoom-in; }
+
+/* Click an image to see it full size */
+.lightbox { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 96vh; overflow: visible; }
+.lightbox::backdrop { background: rgba(0, 0, 0, 0.88); }
+.lightbox img { display: block; width: auto; height: auto; max-width: 96vw; max-height: calc(92vh - 4rem); margin: 0 auto; cursor: zoom-out; }
+.lightbox-nav { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; color: #fff; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.lightbox-nav button {
+  width: 2.75rem; height: 2.75rem; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
+  background: transparent; color: #fff; font: inherit; font-size: 1.25rem; line-height: 1; cursor: pointer;
+}
+.lightbox-nav button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
+.lightbox-nav button:disabled { opacity: 0.3; cursor: default; }
+.lightbox-nav [hidden] { display: none !important; }
+.lightbox-close { margin-left: 1rem; }
+.media.hero { margin-top: 0; }
+
+/* Pull quote: the one line to remember from each entry */
+.pull {
+  margin: 2.25rem 0;
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  border-left: 3px solid var(--accent);
+}
+.pull p {
+  margin: 0 !important;
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  line-height: 1.3;
+  color: var(--black);
+}
+
+/* Carousel: one image at a time, swipe or use the arrows */
+.carousel-track {
+  display: flex; align-items: center;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  overscroll-behavior-x: contain; scrollbar-width: none;
+  background: var(--soft);
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track .slide { flex: 0 0 100%; scroll-snap-align: center; align-self: stretch; display: flex; flex-direction: column; background: var(--slide-bg, transparent); }
+.slide-media { flex: 1; display: block; }
+.slide-caption { padding: 1rem 1.25rem 1.25rem; font-size: 1rem; line-height: 1.5; color: var(--ink); }
+.slide-caption strong { display: block; margin-bottom: 0.25rem; font-size: 1.0625rem; color: var(--black); }
+
+/* Screens: one phone screen per slide on a coloured panel, with its caption beside it */
+.carousel-screens .carousel-track { background: transparent; align-items: stretch; }
+.carousel-screens .slide { flex-direction: row; align-items: center; gap: 2rem; padding: 2rem; min-height: 32rem; }
+.carousel-screens .slide-media { flex: 0 0 auto; display: block; }
+.carousel-screens .slide-media img { width: 15rem; border: 0.4rem solid #1c1917; border-radius: 1.5rem; background: #fff; }
+.carousel-screens .slide-caption { flex: 1; padding: 0; font-size: 1.125rem; }
+.carousel-screens .slide-caption strong { font-family: var(--serif); font-weight: 400; font-size: 1.75rem; line-height: 1.15; margin-bottom: 0.75rem; }
+
+/* Icons: a small image with its caption beside it */
+.carousel-icons .carousel-track { align-items: stretch; }
+.carousel-icons .slide { flex-direction: row; align-items: center; gap: 1.75rem; padding: 2rem; }
+.carousel-icons .slide-media { flex: 0 0 auto; }
+.carousel-icons .slide-media img { width: 7.5rem; height: auto; border-radius: 22%; }
+.carousel-icons .slide-caption { flex: 1; padding: 0; }
+
+/* A product's own font for its captions */
+.font-inter .slide-caption, .font-inter .slide-caption strong { font-family: "Inter", var(--sans); }
+.font-inter.carousel-screens .slide-caption strong { font-weight: 700; letter-spacing: -0.01em; }
+.font-fraunces .slide-caption, .font-fraunces .slide-caption strong { font-family: "Fraunces", var(--serif); }
+.font-poppins .slide-caption, .font-poppins .slide-caption strong { font-family: "Poppins", var(--sans); }
+.font-poppins.carousel-screens .slide-caption strong { font-weight: 600; }
+
+/* Small product logo in the bottom-right corner of each slide */
+.slide { position: relative; }
+.slide-badge { position: absolute; right: 1.25rem; bottom: 1rem; width: 5.5rem !important; height: auto; opacity: 0.85; pointer-events: none; cursor: default !important; }
+
+/* A slide without the phone frame, e.g. the logo and app icon */
+.carousel-screens .slide-plain .slide-media img { width: 15rem; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+
+/* Small label above a carousel */
+.carousel-heading { margin: 0 0 0.6rem !important; font-size: 0.9375rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--black); }
+
+/* Approach: steps shown all at once, styled like the icon carousels */
+.approach-panel { padding: 2rem; background: var(--soft); }
+.approach-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem 2rem; }
+.approach-item { display: flex; align-items: flex-start; gap: 1rem; font-size: 1rem; line-height: 1.5; color: var(--ink); }
+.approach-item strong { display: block; margin-bottom: 0.25rem; font-size: 1.0625rem; color: var(--black); }
+.approach-footer { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--soft-line); align-items: center; }
+.approach-icon { flex: none; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 0.75rem; background: #fff; border: 1px solid var(--soft-line); color: #1c1917; }
+.approach-icon[style] { border: 0; }
+.approach-icon svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.font-inter .approach-item, .font-inter .approach-item strong { font-family: "Inter", var(--sans); }
+
+/* Light grey border round each image */
+.carousel-bordered .carousel-track { background: transparent; }
+.carousel-bordered .slide-media img { border: 1px solid #dcdcdc; }
+
+/* Steps: a wide screenshot per slide with its caption underneath */
+.carousel-steps .slide-caption { background: var(--slide-bg, #fff); border-top: 1px solid var(--soft-line); }
+.carousel-steps .slide[style] .slide-caption { border-top: 0; padding-top: 0.25rem; }
+.carousel-controls { display: none; }
+.js .carousel-controls {
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  margin-top: 0.75rem; font-size: 1rem; color: var(--muted);
+}
+.carousel-controls button {
+  width: 2.5rem; height: 2.5rem; border: 1px solid var(--rule); border-radius: 50%;
+  background: #fff; color: var(--black); font: inherit; font-size: 1.125rem; line-height: 1; cursor: pointer;
+}
+.carousel-controls button:hover:not(:disabled) { border-color: var(--black); }
+.carousel-controls button:disabled { opacity: 0.35; cursor: default; }
+.carousel-count { min-width: 3.5rem; text-align: center; font-variant-numeric: tabular-nums; }
+
+.slot {
+  display: grid; place-items: center; text-align: center;
+  aspect-ratio: 16 / 9; padding: 1rem;
+  background: #fafafa; border: 1px dashed var(--rule);
+  font-size: 0.875rem; line-height: 1.4; color: #777;
+}
+.slot code { font-family: ui-monospace, Menlo, monospace; font-size: 0.95em; }
+
+/* Older / newer */
+.pager {
+  display: flex; justify-content: space-between; gap: 1.5rem;
+  margin-top: 3rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 1.0625rem;
+}
+.pager a { display: block; color: var(--accent); text-decoration: none; max-width: 48%; }
+.pager a:hover { text-decoration: underline; }
+.pager small { display: block; font-size: 0.75em; color: var(--muted); }
+.pager .next { margin-left: auto; text-align: right; }
+
+
+/* Footer */
+.site-footer {
+  margin-top: 3rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: 1.125rem; color: var(--muted);
+}
+.site-footer a { color: var(--accent); }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; }
+
+/* ---------- Narrow screens: sidebar becomes a menu above the entry ---------- */
+
+@media (max-width: 900px) {
+  .shell { display: block; padding: 2rem 1.5rem 3rem; }
+  .sidebar { position: static; max-height: none; overflow: visible; padding: 0; margin-bottom: 2rem; }
+  .masthead { margin-bottom: 1.5rem; padding-bottom: 1.5rem; }
+  .site-title { font-size: 2.75rem; }
+  .site-sub { font-size: 1.375rem; }
+  /* Images run edge to edge on phones */
+  .entry > .media { width: calc(100% + 3rem); margin-left: -1.5rem; margin-right: -1.5rem; }
+  .nav-toggle {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    width: 100%; padding: 0.7rem 0.9rem;
+    background: #fff; border: 1px solid var(--rule); border-radius: 0.5rem;
+    font: inherit; font-size: 1.0625rem; font-weight: 700; color: var(--black); text-align: left;
+    cursor: pointer;
+  }
+  .chev { width: 0.55rem; height: 0.55rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.15s; }
+  .nav-toggle[aria-expanded="true"] .chev { transform: rotate(225deg); }
+  .js .nav { display: none; margin-top: 0.5rem; padding: 0.5rem; border: 1px solid var(--soft-line); border-radius: 0.5rem; }
+  .js .nav.open { display: block; }
+  .nav-label { display: none; }
+  .carousel-screens .slide { flex-direction: column; gap: 1.25rem; padding: 1.5rem; min-height: 0; }
+  .carousel-screens .slide-media img { width: 12.5rem; }
+  .carousel-screens .slide-caption { text-align: center; }
+  .carousel-icons .slide { flex-direction: column; text-align: center; gap: 1rem; padding: 1.5rem; }
+  .approach-panel { padding: 1.5rem; }
+  .approach-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .carousel-screens .slide-plain .slide-media img { width: 12.5rem; }
+  .pull p { font-size: 1.5rem; }
+  .entry h2 { font-size: 2.25rem; }
+}
+
+@media (max-width: 736px) {
+  body { font-size: 1.0625rem; }
+  .summary { font-size: 1.1875rem; }
+  .entry h2 { font-size: 2rem; }
+  .site-title { font-size: 2.25rem; }
+  .site-sub { font-size: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) { .chev { transition: none; } .carousel-track { scroll-behavior: auto; } }
+
+@media print {
+  .sidebar, .pager, .skip, .back { display: none; }
+  .entry[hidden] { display: block !important; }
+  .shell { display: block; padding: 0; }
+}
