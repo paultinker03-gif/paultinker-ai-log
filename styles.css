@@ -290,8 +290,8 @@ a:hover { text-decoration-thickness: 2px; }
 .font-inter .approach-item, .font-inter .approach-item strong { font-family: "Inter", var(--sans); }
 
 /* Light grey border round each image */
-.carousel-bordered .carousel-track { background: transparent; }
-.carousel-bordered .slide-media img { border: 1px solid #dcdcdc; }
+/* The line sits on the carousel's frame, not each image, so it stays put while slides move. */
+.carousel-bordered .carousel-track { background: transparent; border: 1px solid #dcdcdc; }
 
 /* Steps: a wide screenshot per slide with its caption underneath */
 .carousel-steps .slide-caption { background: var(--slide-bg, #fff); border-top: 1px solid var(--soft-line); }
