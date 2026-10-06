@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Two design systems, out of design and into code · Paul Tinker</title>
+  <meta name="description" content="Out of design artifacts and into code: the two largest design systems I've worked on rebuilt as real front-ends, prototypes running on them, and a product idea built from scratch.">
+  <link rel="canonical" href="https://ai.paultinker.uk/2026-09-21/">
+  <link rel="alternate" type="application/rss+xml" title="Paul Tinker — AI-native products &amp; design systems" href="/feed.xml">
+  <meta property="og:site_name" content="Paul Tinker — AI-native products &amp; design systems">
+  <meta property="og:title" content="Two design systems, out of design and into code · Paul Tinker">
+  <meta property="og:type" content="article">
+  <meta property="og:description" content="Out of design artifacts and into code: the two largest design systems I've worked on rebuilt as real front-ends, prototypes running on them, and a product idea built from scratch.">
+  <meta property="og:url" content="https://ai.paultinker.uk/2026-09-21/">
+  <meta property="og:image" content="https://ai.paultinker.uk/assets/images/share/design-systems-in-code.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="/assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/dm-serif-text.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/dm-serif-text-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/dm-sans-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Two design systems, out of design and into code","description":"Out of design artifacts and into code: the two largest design systems I've worked on rebuilt as real front-ends, prototypes running on them, and a product idea built from scratch.","datePublished":"2026-09-21","url":"https://ai.paultinker.uk/2026-09-21/","author":{"@type":"Person","name":"Paul Tinker","url":"https://paultinker.uk","sameAs":["https://www.linkedin.com/in/paultinker/"]},"inLanguage":"en-GB","isPartOf":{"@type":"Blog","name":"AI-native products & design systems","url":"https://ai.paultinker.uk"}}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the entry</a>
+  <div class="shell">
+    <header class="masthead">
+      <a class="back" href="https://paultinker.uk#ai">Back to paultinker.uk</a>
+      <h1 class="site-title"><a href="/">AI-native products &amp; design systems</a></h1>
+      <p class="site-sub">A working log of designing and building digital products with AI</p>
+    </header>
+    <aside class="sidebar">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="entry-nav">
+        <span class="nav-current">21 September</span><span class="chev" aria-hidden="true"></span>
+      </button>
+      <nav id="entry-nav" class="nav" aria-label="Entries">
+        <h2 class="nav-label">Entries</h2>
+        <ul>
+          <li><a href="/2026-10-05/">5 October</a></li>
+          <li><a href="/2026-10-01/">1 October</a></li>
+          <li><a href="/2026-09-24/">24 September</a></li>
+          <li><a href="/2026-09-21/" aria-current="page">21 September</a></li>
+          <li><a href="/2026-09-18/">18 September</a></li>
+          <li><a href="/2026-09-07/">7 September</a></li>
+          <li><a href="/2026-08-28/">28 August</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main id="main" class="main">
+<article class="entry" aria-labelledby="entry-h">
+    <header>
+      <h2 id="entry-h"><time datetime="2026-09-21">21 September 2026</time></h2>
+      <p class="summary">Out of design artifacts and into code: the two largest design systems I've worked on rebuilt as real front-ends, prototypes running on them, and a product idea built from scratch.</p>
+    </header>
+    <ul class="meta" aria-label="At a glance"><li>Two systems</li><li>115 components</li><li>111 stories</li><li>Four brands</li><li>Light and dark</li></ul>
+    
+    <figure class="media carousel carousel-bordered" aria-roledescription="carousel" aria-label="Storybook for the Keystone design system">
+      
+      <div class="carousel-track" tabindex="0"><div class="slide" role="group" aria-roledescription="slide" aria-label="1 of 2"><div class="slide-media"><img src="/assets/images/design-systems-in-code/storybook-01.jpg?v=tmhpz9" srcset="/assets/images/design-systems-in-code/sized/storybook-01-400.jpg?v=tmhxpv 400w, /assets/images/design-systems-in-code/sized/storybook-01-800.jpg?v=tmhxpw 800w, /assets/images/design-systems-in-code/storybook-01.jpg?v=tmhpz9 1112w" sizes="(max-width: 900px) 100vw, 704px" width="1112" height="852" data-full="/assets/images/design-systems-in-code/storybook-01.jpg?v=tmhpz9" alt="Storybook running the Keystone design system: the ComplexList component showing a contribution history, with its controls panel open." fetchpriority="high" decoding="async"></div></div><div class="slide" role="group" aria-roledescription="slide" aria-label="2 of 2"><div class="slide-media"><img src="/assets/images/design-systems-in-code/storybook-02.jpg?v=tmhpza" srcset="/assets/images/design-systems-in-code/sized/storybook-02-400.jpg?v=tmhxpw 400w, /assets/images/design-systems-in-code/sized/storybook-02-800.jpg?v=tmhxpx 800w, /assets/images/design-systems-in-code/storybook-02.jpg?v=tmhpza 1112w" sizes="(max-width: 900px) 100vw, 704px" width="1112" height="852" data-full="/assets/images/design-systems-in-code/storybook-02.jpg?v=tmhpza" alt="Storybook running the Keystone design system: the MetricCard component with a segmented bar for you, your employer and tax relief." loading="lazy" decoding="async"></div></div></div>
+      <div class="carousel-controls">
+        <button class="carousel-prev" type="button" aria-label="Previous image">&larr;</button>
+        <span class="carousel-count" aria-live="polite">1 / 2</span>
+        <button class="carousel-next" type="button" aria-label="Next image">&rarr;</button>
+      </div>
+    </figure>
+    <p><strong>Into code.</strong> I've rebuilt the two largest design systems I've worked on as real front-end code: the same two that were design artifacts on <a href="/2026-09-18/">18 September</a>. 115 React components between them, each with a token source that compiles to CSS variables rather than sitting as a flat file, and four brands themed light and dark on one of them. Both built out from my own design files rather than from anyone's codebase.</p>
+    <p><strong>Storybook as the test harness.</strong> 111 stories across the two, and every one runs as a test in a real browser. Break a component and the run fails, rather than waiting for someone to notice. Brand, theme and direction all switch from the toolbar, so any component can be checked in any of the ten theme combinations, LTR or RTL, without leaving the page. Everything in this log up to now lived in design artifacts; this is the first version an engineer could open, read and argue with.</p>
+    <p><strong>Docs from the same source.</strong> Both documentation sites import the same components and tokens the products use, so each system has one source feeding the docs, Storybook and the apps. Every design system I've worked on had documentation that lagged the components by a few days or weeks. These structurally can't.</p>
+    <figure class="media "><img src="/assets/images/design-systems-in-code/sized/design-systems-gallery-1400.jpg?v=tmhxpv" srcset="/assets/images/design-systems-in-code/sized/design-systems-gallery-400.jpg?v=tmhxpt 400w, /assets/images/design-systems-in-code/sized/design-systems-gallery-800.jpg?v=tmhxpu 800w, /assets/images/design-systems-in-code/sized/design-systems-gallery-1400.jpg?v=tmhxpv 1400w" sizes="(max-width: 900px) 100vw, 704px" width="2123" height="910" data-full="/assets/images/design-systems-in-code/design-systems-gallery.jpg?v=tmhpid" alt="Keystone in Zurich branding: the member, adviser and employer dashboards, built from the same components." loading="lazy" decoding="async"></figure>
+    <p class="also-label"><strong>Also</strong></p><ul class="bullets"><li>Several app prototypes covering different user types and journeys, built in Claude Code from the system's own components rather than drawn. Starting a new one is now an afternoon, because the parts underneath are real</li><li>A product idea I'd shared with a former colleague, written down as a vision and then actually built on Chakra rather than a component library from scratch, because the question was whether the idea worked, not whether I could make buttons. Two weeks ago it would have stayed a conversation</li><li>Accessibility violations report per story in Storybook, checked as you build rather than audited at the end</li></ul>
+    <p><strong>Not yet.</strong> No backend. There's a sign-in screen, but nothing behind it checks anything. No data layer worth the name. These are front-ends: real components, real tokens, real states, nothing behind them. Worth saying plainly, because &quot;I built a product&quot; can mean very different things.</p>
+    <blockquote class="pull"><p>Every design system I've worked on had documentation that lagged the components by a few days or weeks. These structurally can't.</p></blockquote>
+    <p><strong>Next.</strong> Two things I know are missing.</p>
+    <ul class="bullets"><li><strong>Versioning:</strong> no releases, no changelog, nothing for anyone to pin to. Fine for one person, untenable the moment a second team builds on it</li><li><strong>Visual regression, properly or not at all:</strong> scaffolded and unused, so either wire it up or take it out</li></ul>
+    <p>After those, the questions that need other people in the room: where governance sits, what stops drift, and what a review looks like when the thing being reviewed took ten minutes to make.</p>
+    <nav class="pager" aria-label="More entries">
+      <a class="prev" href="/2026-09-18/"><small>Older</small>&larr; 18 September</a>
+      <a class="next" href="/2026-09-24/"><small>Newer</small>24 September &rarr;</a>
+    </nav>
+  </article>
+      <footer class="site-footer">
+        <ul>
+          <li><a href="https://paultinker.uk#ai">Back to main page</a></li>
+          <li><a href="https://www.linkedin.com/in/paultinker/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="https://drive.google.com/file/d/1yZDxT7tIeJI6uo1lH3eONTze7y4aqznz/view?usp=sharing" target="_blank" rel="noopener">Download CV (PDF)<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="mailto:hello@paultinker.uk">hello@paultinker.uk</a></li>
+        </ul>
+      </footer>
+    </main>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

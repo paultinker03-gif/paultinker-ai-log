@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Governance in an AI-native world · Paul Tinker</title>
+  <meta name="description" content="Governance in an AI-native world: an agent that decides before it builds, a front door anyone in the company can use, and a person who still makes the call.">
+  <link rel="canonical" href="https://ai.paultinker.uk/2026-10-01/">
+  <link rel="alternate" type="application/rss+xml" title="Paul Tinker — AI-native products &amp; design systems" href="/feed.xml">
+  <meta property="og:site_name" content="Paul Tinker — AI-native products &amp; design systems">
+  <meta property="og:title" content="Governance in an AI-native world · Paul Tinker">
+  <meta property="og:type" content="article">
+  <meta property="og:description" content="Governance in an AI-native world: an agent that decides before it builds, a front door anyone in the company can use, and a person who still makes the call.">
+  <meta property="og:url" content="https://ai.paultinker.uk/2026-10-01/">
+  <meta property="og:image" content="https://ai.paultinker.uk/assets/images/share/governance.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="/assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/dm-serif-text.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/dm-serif-text-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/dm-sans-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Governance in an AI-native world","description":"Governance in an AI-native world: an agent that decides before it builds, a front door anyone in the company can use, and a person who still makes the call.","datePublished":"2026-10-01","url":"https://ai.paultinker.uk/2026-10-01/","author":{"@type":"Person","name":"Paul Tinker","url":"https://paultinker.uk","sameAs":["https://www.linkedin.com/in/paultinker/"]},"inLanguage":"en-GB","isPartOf":{"@type":"Blog","name":"AI-native products & design systems","url":"https://ai.paultinker.uk"}}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the entry</a>
+  <div class="shell">
+    <header class="masthead">
+      <a class="back" href="https://paultinker.uk#ai">Back to paultinker.uk</a>
+      <h1 class="site-title"><a href="/">AI-native products &amp; design systems</a></h1>
+      <p class="site-sub">A working log of designing and building digital products with AI</p>
+    </header>
+    <aside class="sidebar">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="entry-nav">
+        <span class="nav-current">1 October</span><span class="chev" aria-hidden="true"></span>
+      </button>
+      <nav id="entry-nav" class="nav" aria-label="Entries">
+        <h2 class="nav-label">Entries</h2>
+        <ul>
+          <li><a href="/2026-10-05/">5 October</a></li>
+          <li><a href="/2026-10-01/" aria-current="page">1 October</a></li>
+          <li><a href="/2026-09-24/">24 September</a></li>
+          <li><a href="/2026-09-21/">21 September</a></li>
+          <li><a href="/2026-09-18/">18 September</a></li>
+          <li><a href="/2026-09-07/">7 September</a></li>
+          <li><a href="/2026-08-28/">28 August</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main id="main" class="main">
+<article class="entry" aria-labelledby="entry-h">
+    <header>
+      <h2 id="entry-h"><time datetime="2026-10-01">1 October 2026</time></h2>
+      <p class="summary">Governance in an AI-native world: an agent that decides before it builds, a front door anyone in the company can use, and a person who still makes the call.</p>
+    </header>
+    <ul class="meta" aria-label="At a glance"><li>One agent</li><li>Two audiences</li><li>Three real requests</li><li>Nothing merged without a person</li></ul>
+    
+    <figure class="media"><video controls playsinline preload="metadata" aria-label="Demo of the governance agent and request desk" poster="/assets/images/governance/governance-demo-poster.jpg?v=tmhy5f"><source src="/assets/videos/governance-demo.mp4?v=tmhy5f"></video></figure>
+    <p>When a component costs minutes to make, the risk isn't a slow design system. It's a sprawling one. On <a href="/2026-08-28/">28 August</a> I asked who approves a component, and how you stop AI inventing patterns instead of reusing them. This is a first answer: the job moves from making to deciding.</p>
+    <p><strong>The agent.</strong> Before it builds anything, it searches the system and makes one call: reuse, extend, build new, or decline. It writes the reasoning down the way a design system lead would, drafts anything it builds with stories, docs and accessibility notes, and never merges its own work. Three real requests got three different answers: a status label (reuse: the Badge already does it), a checkout error summary (extend: the existing one looked right but its links went nowhere), and a confetti countdown for one sale (decline: campaign work, not system work). Generating code is easy now; saying no well is the job.</p>
+    <p><strong>An interface for anyone.</strong> The agent runs in Claude Code, but asking for a component shouldn't need it. So there's a request desk anyone can use: ask in plain words, get a plain answer back. The design system team sees the same request from the other side and approves, declines or asks a question.</p>
+    <p>Three rules so far: check for reuse before generating, write the reasoning down, and keep the decision with a person. AI can draft the component. Deciding whether it belongs is still governance, and still a person's job.</p>
+    <blockquote class="pull"><p>Generating code is easy now; saying no well is the job.</p></blockquote>
+    <nav class="pager" aria-label="More entries">
+      <a class="prev" href="/2026-09-24/"><small>Older</small>&larr; 24 September</a>
+      <a class="next" href="/2026-10-05/"><small>Newer</small>5 October &rarr;</a>
+    </nav>
+  </article>
+      <footer class="site-footer">
+        <ul>
+          <li><a href="https://paultinker.uk#ai">Back to main page</a></li>
+          <li><a href="https://www.linkedin.com/in/paultinker/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="https://drive.google.com/file/d/1yZDxT7tIeJI6uo1lH3eONTze7y4aqznz/view?usp=sharing" target="_blank" rel="noopener">Download CV (PDF)<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="mailto:hello@paultinker.uk">hello@paultinker.uk</a></li>
+        </ul>
+      </footer>
+    </main>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
