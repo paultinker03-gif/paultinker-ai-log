@@ -279,7 +279,7 @@ a:hover { text-decoration-thickness: 2px; }
 .font-poppins .slide-caption, .font-poppins .slide-caption strong { font-family: "Poppins", var(--sans); }
 .font-poppins.carousel-screens .slide-caption strong { font-weight: 600; }
 
-/* Small product logo in the top-right corner of each slide */
+/* Small product logo in the top-right corner of each slide (not on the logo slide itself) */
 .slide { position: relative; }
 .slide-badge { position: absolute; right: 1.25rem; top: 1rem; width: 5.5rem !important; height: auto; opacity: 0.85; pointer-events: none; cursor: default !important; }
 
@@ -382,8 +382,8 @@ a:hover { text-decoration-thickness: 2px; }
   .approach-panel { padding: 1.5rem; }
   .approach-grid { grid-template-columns: 1fr; gap: 1.25rem; }
   .carousel-screens .slide-plain .slide-media { --w: 12.5rem; }
-  /* Room above the phone for the logo in the corner */
-  .carousel-screens .slide:has(.slide-badge) { padding-top: 3.75rem; }
+  /* Room above the phone for the logo in the corner, on every slide of that carousel so the text stays level */
+  .carousel-screens:has(.slide-badge) .slide { padding-top: 3.75rem; }
   .pull p { font-size: 1.5rem; }
   .entry h2 { font-size: 2.25rem; }
 }
