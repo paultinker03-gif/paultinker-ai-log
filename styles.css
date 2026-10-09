@@ -363,6 +363,8 @@ a:hover { text-decoration-thickness: 2px; }
   .site-sub { font-size: 1.375rem; }
   /* Images run edge to edge on phones */
   .entry > .media { width: calc(100% + 3rem); margin-left: -1.5rem; margin-right: -1.5rem; }
+  /* ...but a label above one keeps the same left edge as the text */
+  .entry > .media > .carousel-heading { padding: 0 1.5rem; }
   .nav-toggle {
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     width: 100%; padding: 0.7rem 0.9rem;
