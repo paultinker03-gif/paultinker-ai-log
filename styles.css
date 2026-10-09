@@ -279,12 +279,14 @@ a:hover { text-decoration-thickness: 2px; }
 .font-poppins .slide-caption, .font-poppins .slide-caption strong { font-family: "Poppins", var(--sans); }
 .font-poppins.carousel-screens .slide-caption strong { font-weight: 600; }
 
-/* Small product logo in the bottom-right corner of each slide */
+/* Small product logo in the top-right corner of each slide */
 .slide { position: relative; }
-.slide-badge { position: absolute; right: 1.25rem; bottom: 1rem; width: 5.5rem !important; height: auto; opacity: 0.85; pointer-events: none; cursor: default !important; }
+.slide-badge { position: absolute; right: 1.25rem; top: 1rem; width: 5.5rem !important; height: auto; opacity: 0.85; pointer-events: none; cursor: default !important; }
 
-/* A slide without the phone frame, e.g. the logo and app icon */
-.carousel-screens .slide-plain .slide-media img { width: 15rem; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+/* A slide without the phone frame, e.g. the logo and app icon. Its picture sits in a box the size of
+   the framed phone screens (644 x 1400 inside a 0.4rem border), centred, so the text lands where it does on every other slide. */
+.carousel-screens .slide-plain .slide-media { --w: 15rem; display: flex; align-items: center; justify-content: center; width: var(--w); height: calc((var(--w) - 0.8rem) * 1400 / 644 + 0.8rem); }
+.carousel-screens .slide-plain .slide-media img { width: 100%; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
 
 /* Small label above a carousel */
 .carousel-heading { margin: 0 0 0.6rem !important; font-size: 0.9375rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--black); }
@@ -379,7 +381,9 @@ a:hover { text-decoration-thickness: 2px; }
   .carousel-icons .slide { flex-direction: column; text-align: center; gap: 1rem; padding: 1.5rem; }
   .approach-panel { padding: 1.5rem; }
   .approach-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-  .carousel-screens .slide-plain .slide-media img { width: 12.5rem; }
+  .carousel-screens .slide-plain .slide-media { --w: 12.5rem; }
+  /* Room above the phone for the logo in the corner */
+  .carousel-screens .slide:has(.slide-badge) { padding-top: 3.75rem; }
   .pull p { font-size: 1.5rem; }
   .entry h2 { font-size: 2.25rem; }
 }
