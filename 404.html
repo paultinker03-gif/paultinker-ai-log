@@ -21,6 +21,17 @@
   <link rel="preload" href="/assets/fonts/dm-serif-text-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/dm-sans-italic.woff2" as="font" type="font/woff2" crossorigin>
   <script>document.documentElement.classList.add('js')</script>
+  <!-- Google Analytics, the same property as paultinker.uk. Only counts visits on the live site, not local previews. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    if (location.hostname === 'ai.paultinker.uk') {
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-KJQHXD9PGP';
+      document.head.appendChild(ga);
+      gtag('js', new Date());
+      gtag('config', 'G-KJQHXD9PGP');
+    }
+  </script>
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
@@ -30,9 +41,15 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to the entry</a>
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="https://paultinker.uk"><span>Paul Tinker</span><small>Product designer · Design systems</small></a>
+      <a class="back" href="https://paultinker.uk/#ai">Back to portfolio</a>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </header>
   <div class="shell">
     <header class="masthead">
-      <a class="back" href="https://paultinker.uk#ai">Back to paultinker.uk</a>
       <h1 class="site-title"><a href="/">AI-native products &amp; design systems</a></h1>
       <p class="site-sub">A working log of designing and building digital products with AI</p>
     </header>
@@ -73,7 +90,7 @@
     </figure>
     <p>The question: can one designer, directing AI, take a product the whole way, from the design system to the app stores? Kavvi, a renewals app for families, was the test.</p>
     <p><strong>Dates, not documents.</strong> Kavvi tracks the dates every household forgets (MOT, insurance, passports, subscriptions) and reminds you before they're due. The first design scanned passports and masked the numbers. Then I asked whether we needed the documents at all. We didn't. A list of names and dates is no use to a fraudster, so there's no scanning, no account and no server. Removing a feature did more for security than any encryption would have, and it took a lot of complexity out with it.</p>
-    <blockquote class="pull"><p>When building costs an afternoon, what you leave out is the design.</p></blockquote>
+    <blockquote class="pull"><p>When building is this fast, what you leave out is the design.</p></blockquote>
     <p><strong>What's in it.</strong> Import the spreadsheet you already keep, whatever the columns are called, or paste a renewal email to fill in the details. One passport card covers the whole family, with children's five-year dates worked out. Reminders are scheduled on the phone, so they arrive without signal. Two phones sync by being held together. There's a widget, and Siri on iPhone.</p>
     <p><strong>One system, start to finish.</strong> Polished visual design wasn't the point. The goal was to test production end to end, from the design system all the way to the app stores, and to get real feedback on the functionality. I started on Chakra UI for speed and built my own design system on top, themed light and dark. The components live in Storybook and a docs site, and the phone and tablet apps, the marketing site, and even the store images and listings are all built from them.</p>
     <section class="media approach font-inter" aria-label="How Kavvi was made">
@@ -95,7 +112,7 @@
     </figure>
     <p><strong>Directed, not hand-coded.</strong> My hands-on code work is recent and AI-directed, not years of production front-end. The build was prompted; every decision about what stayed was mine. What I bring is twenty years of knowing what a product that works and a production design system need, and checking that Kavvi got both.</p>
     <p class="also-label"><strong>Also</strong></p><ul class="bullets"><li>No AI in the product, deliberately. Sending people's insurance emails to an AI service would have broken the privacy promise in one feature, so Quick fill reads a pasted email with pattern matching on the phone, then asks you to check it</li><li>Under version control from the start: full history and backups, numbered builds, and a changelog in the docs</li></ul>
-    <p><strong>In three days.</strong> Most of the decisions that mattered were things I took out or kept out: the scans, the account, the server, the AI. When building costs an afternoon, what you leave out is the design.</p>
+    <p><strong>What I left out.</strong> Most of the decisions that mattered were things I took out or kept out: the passport scans, the account, the server, the AI in the product. When building is this fast, what you leave out is the design.</p>
     <p><a class="btn" href="https://play.google.com/store/apps/details?id=app.kavvi" target="_blank" rel="noopener">Get it on Google Play<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></p>
     <nav class="pager" aria-label="More entries">
       <a class="prev" href="/2026-10-01/"><small>Older</small>&larr; 1 October</a>
@@ -104,7 +121,7 @@
   </article>
       <footer class="site-footer">
         <ul>
-          <li><a href="https://paultinker.uk#ai">Back to main page</a></li>
+          <li><a href="https://paultinker.uk/#ai">Back to main page</a></li>
           <li><a href="https://www.linkedin.com/in/paultinker/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
           <li><a href="https://drive.google.com/file/d/1yZDxT7tIeJI6uo1lH3eONTze7y4aqznz/view?usp=sharing" target="_blank" rel="noopener">Download CV (PDF)<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
           <li><a href="mailto:hello@paultinker.uk">hello@paultinker.uk</a></li>

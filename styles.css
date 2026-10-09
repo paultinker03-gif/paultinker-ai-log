@@ -89,15 +89,26 @@ a:hover { text-decoration-thickness: 2px; }
 
 .sidebar {
   position: sticky;
-  top: 2rem;
+  top: 6rem;
   align-self: start;
-  max-height: calc(100vh - 3rem);
+  max-height: calc(100vh - 7rem);
   overflow-y: auto;
   padding-right: 0.5rem;
   scrollbar-width: thin;
 }
 
-.back { font-size: 1.125rem; color: var(--accent); }
+/* Top bar, shared with the case studies on paultinker.uk: name and role on the left,
+   the way back to the portfolio on the right, reading progress along the bottom edge.
+   Its content lines up with the page below: sidebar 17rem + gap 4rem + column 44rem = 65rem, plus the 2rem side padding. */
+.top { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--soft-line); }
+.top-in { max-width: calc(65rem + 4rem); margin: 0 auto; padding: 14px 2rem; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 1rem; line-height: 1.4; }
+.top a { color: var(--ink); text-decoration: none; }
+.top .brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.top .brand span { font-family: var(--serif); font-size: 1.25rem; color: var(--black); }
+.top .brand small { font-size: 0.9375rem; color: var(--muted); }
+.top .back { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.top a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); }
 
 /* Title section across the top of the page */
 .masthead {
@@ -343,6 +354,7 @@ a:hover { text-decoration-thickness: 2px; }
 
 @media (max-width: 900px) {
   .shell { display: block; padding: 2rem 1.5rem 3rem; }
+  .top-in { padding: 12px 1.5rem; }
   .sidebar { position: static; max-height: none; overflow: visible; padding: 0; margin-bottom: 2rem; }
   .masthead { margin-bottom: 1.5rem; padding-bottom: 1.5rem; }
   .site-title { font-size: 2.75rem; }
@@ -378,12 +390,15 @@ a:hover { text-decoration-thickness: 2px; }
   .entry h2 { font-size: 2rem; }
   .site-title { font-size: 2.25rem; }
   .site-sub { font-size: 1.25rem; }
+  .top .brand { flex-direction: column; gap: 0; }
+  .top .brand span { font-size: 1.125rem; }
+  .top .brand small { font-size: 0.8125rem; }
 }
 
 @media (prefers-reduced-motion: reduce) { .chev { transition: none; } .carousel-track { scroll-behavior: auto; } }
 
 @media print {
-  .sidebar, .pager, .skip, .back { display: none; }
+  .sidebar, .pager, .skip, .top { display: none; }
   .entry[hidden] { display: block !important; }
   .shell { display: block; padding: 0; }
 }

@@ -1,7 +1,15 @@
-// Small enhancements: the phone menu, carousels and the full-size image view.
+// Small enhancements: reading progress, the phone menu, carousels and the full-size image view.
 // Every entry has its own page, so everything works without JavaScript too.
 (() => {
   document.documentElement.classList.add('js');
+
+  // Reading progress along the bottom of the top bar, as on the case studies.
+  const bar = document.querySelector('.progress');
+  const onScroll = () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    if (bar) bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   const toggle = document.querySelector('.nav-toggle');
   const nav = document.getElementById('entry-nav');
