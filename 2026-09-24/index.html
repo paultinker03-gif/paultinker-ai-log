@@ -21,6 +21,17 @@
   <link rel="preload" href="/assets/fonts/dm-serif-text-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/dm-sans-italic.woff2" as="font" type="font/woff2" crossorigin>
   <script>document.documentElement.classList.add('js')</script>
+  <!-- Google Analytics, the same property as paultinker.uk. Only counts visits on the live site, not local previews. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    if (location.hostname === 'ai.paultinker.uk') {
+      var ga = document.createElement('script'); ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-KJQHXD9PGP';
+      document.head.appendChild(ga);
+      gtag('js', new Date());
+      gtag('config', 'G-KJQHXD9PGP');
+    }
+  </script>
   <link rel="stylesheet" href="/styles.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
@@ -29,9 +40,15 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to the entry</a>
+  <header class="top">
+    <div class="top-in">
+      <a class="brand" href="https://paultinker.uk"><span>Paul Tinker</span><small>Product designer · Design systems</small></a>
+      <a class="back" href="https://paultinker.uk/#ai">Back to portfolio</a>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </header>
   <div class="shell">
     <header class="masthead">
-      <a class="back" href="https://paultinker.uk#ai">Back to paultinker.uk</a>
       <h1 class="site-title"><a href="/">AI-native products &amp; design systems</a></h1>
       <p class="site-sub">A working log of designing and building digital products with AI</p>
     </header>
@@ -95,7 +112,7 @@
   </article>
       <footer class="site-footer">
         <ul>
-          <li><a href="https://paultinker.uk#ai">Back to main page</a></li>
+          <li><a href="https://paultinker.uk/#ai">Back to main page</a></li>
           <li><a href="https://www.linkedin.com/in/paultinker/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
           <li><a href="https://drive.google.com/file/d/1yZDxT7tIeJI6uo1lH3eONTze7y4aqznz/view?usp=sharing" target="_blank" rel="noopener">Download CV (PDF)<svg class="ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg><span class="visually-hidden"> (opens in a new tab)</span></a></li>
           <li><a href="mailto:hello@paultinker.uk">hello@paultinker.uk</a></li>
