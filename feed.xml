@@ -6,7 +6,14 @@
     <atom:link href="https://ai.paultinker.uk/feed.xml" rel="self" type="application/rss+xml"/>
     <description>A working log of designing and building digital products with AI: design systems rebuilt in code, products shipped end to end, and what changes when AI is part of the system.</description>
     <language>en-gb</language>
-    <lastBuildDate>Mon, 05 Oct 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 12 Oct 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>TOBi, again</title>
+      <link>https://ai.paultinker.uk/2026-10-12/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/2026-10-12/</guid>
+      <pubDate>Mon, 12 Oct 2026 09:00:00 GMT</pubDate>
+      <description>I designed TOBi, Vodafone's chatbot, before today's generative models. Looking at it again: what changes when the AI can say anything, and what doesn't.</description>
+    </item>
     <item>
       <title>Kavvi: a renewals app, designed and shipped end to end</title>
       <link>https://ai.paultinker.uk/2026-10-05/</link>
