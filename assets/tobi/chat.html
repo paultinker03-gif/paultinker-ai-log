@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TOBi chat: why is my bill higher?</title>
+<!-- The phone in the "TOBi, again" carousel (12 October 2026). Built from the TOBi generative prototype,
+     mobile view only. The page around it calls window.tobiDemo.go(step) to move the conversation on;
+     each step adds its messages one at a time, unless reduced motion is set. -->
+<style>
+  @font-face { font-family: VodafoneDemo; src: url(vodafone-400.ttf) format("truetype"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: VodafoneDemo; src: url(vodafone-700.ttf) format("truetype"); font-weight: 700; font-display: swap; }
+
+  :root {
+    color-scheme: light;
+    --vf-red: #E60000;
+    --vf-red-press: #BD0000;
+    --slate: #4A4D4E;
+    --ink: #333333;
+    --muted: #666666;
+    --faint: #6B6B6B;
+    --hairline: #EBEBEB;
+    --canvas: #F4F4F4;
+    --line: #E4E4E4;
+    --white: #FFFFFF;
+    --purple: #9C2AA0;
+    --green: #428600;
+    --yellow: #FECB00;
+    --font: VodafoneDemo, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--white); }
+  body { font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  [hidden] { display: none !important; }
+
+  /* The phone is drawn at 375px wide and zoomed to fit the frame it sits in. */
+  .scaler { width: 375px; transform-origin: top left; }
+  .frame { width: 375px; background: var(--white); overflow: hidden; display: flex; flex-direction: column; }
+  /* Nothing in the phone is clickable: the carousel around it moves the conversation on. */
+  .frame button, .frame input { pointer-events: none; }
+
+  /* Light chrome: one white block for the status bar and header (so no seam shows when the phone is scaled),
+     with red kept for TOBi's face and for actions. */
+  .top { background: var(--white); flex: 0 0 auto; border-bottom: 1px solid var(--line); }
+  .statusbar {
+    height: 20px; color: var(--ink); flex: 0 0 auto;
+    display: flex; align-items: center; gap: 6px; padding: 0 10px; font: 400 12px/16px var(--font);
+  }
+  .statusbar .mid { flex: 1; text-align: center; }
+  .statusbar .end { text-align: right; }
+  .chat-header {
+    color: var(--ink); flex: 0 0 auto;
+    display: flex; align-items: center; gap: 12px; padding: 4px 12px 10px; height: 74px;
+  }
+  .chat-header .who { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+  .chat-header .name { font: 700 18px/22px var(--font); }
+  .chat-header .sub { font: 400 13px/16px var(--font); color: var(--muted); margin-top: 2px; }
+
+  .thread {
+    flex: 1; min-height: 0; overflow-y: auto; background: var(--canvas);
+    padding: 12px 10px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: none;
+  }
+  .thread::-webkit-scrollbar { display: none; }
+  .thread::before { content: ""; margin-top: auto; }
+  .row { display: flex; gap: 6px; align-items: flex-end; }
+  .row.me { justify-content: flex-end; }
+  .stack { display: flex; flex-direction: column; gap: 3px; max-width: 78%; }
+  .row.me .stack { align-items: flex-end; }
+  .bubble {
+    background: var(--white); border-radius: 18px 18px 18px 6px; padding: 10px 15px;
+    font: 400 18px/24px var(--font); color: var(--ink); overflow-wrap: anywhere;
+  }
+  .row.me .bubble { background: var(--slate); color: var(--white); border-radius: 18px 18px 6px 18px; }
+  .meta { display: inline-flex; align-items: center; gap: 4px; font: 400 14px/18px var(--font); color: var(--muted); }
+  .typing {
+    background: var(--white); border-radius: 18px 18px 18px 6px; padding: 13px 15px;
+    display: inline-flex; gap: 5px; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .typing i { width: 7px; height: 7px; border-radius: 50%; background: #9A9A9A; display: block; animation: typing-dot 1.3s ease-in-out infinite; }
+  .typing i:nth-child(2) { animation-delay: .18s; }
+  .typing i:nth-child(3) { animation-delay: .36s; }
+  @keyframes typing-dot { 0%, 60%, 100% { opacity: .25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+
+  /* The newest message rises into place, so it's clear what just happened. */
+  @keyframes msg-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .row.enter { animation: msg-in .38s cubic-bezier(.2, .75, .25, 1) both; }
+
+  .notice {
+    background: var(--white); border: 1px solid #F2D3D3; border-radius: 16px;
+    padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .notice .tag {
+    display: flex; align-items: center; gap: 5px;
+    font: 700 11px/14px var(--font); letter-spacing: .06em; text-transform: uppercase; color: var(--vf-red);
+  }
+  .notice .tag b { width: 5px; height: 5px; border-radius: 50%; background: var(--vf-red); display: block; }
+  .notice .tag .t { margin-left: auto; font: 400 11px/14px var(--font); letter-spacing: 0; text-transform: none; color: var(--faint); }
+  .notice p { margin: 0; font: 400 14px/19px var(--font); color: var(--ink); }
+
+  .card { background: var(--white); border-radius: 16px; border: 1px solid var(--line); overflow: hidden; width: 280px; max-width: 100%; }
+  .card .body { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .card .rule { height: 1px; background: var(--hairline); display: block; }
+  .card h4 { margin: 0; font: 700 16px/22px var(--font); color: var(--ink); }
+  .card p { margin: 0; font: 400 14px/20px var(--font); color: var(--muted); }
+  .card .src { font: 400 12px/16px var(--font); color: var(--muted); }
+  .card-link {
+    appearance: none; background: transparent; border: 0; width: 100%; text-align: left;
+    display: block; font: 700 16px/22px var(--font); color: var(--vf-red); padding: 10px 14px;
+  }
+  .card-cta {
+    appearance: none; border: 0; width: 100%; display: block;
+    background: var(--vf-red); color: var(--white); font: 700 16px/22px var(--font); text-align: center; padding: 11px 14px;
+  }
+  .card-cta.done { background: var(--green); }
+  .wait { display: inline-flex; align-items: center; gap: 6px; font: 400 14px/18px var(--font); color: var(--muted); }
+  .wait i { width: 9px; height: 9px; border-radius: 50%; background: var(--green); display: block; }
+
+  .found-row { display: grid; grid-template-columns: 22px 1fr; gap: 2px 10px; align-items: start; padding: 6px 0; }
+  .found-row + .found-row { border-top: 1px solid var(--hairline); }
+  .found-row .amt { font: 700 16px/22px var(--font); color: var(--ink); }
+  .found-row p, .found-row .sure { grid-column: 2; }
+  .sure { display: inline-flex; align-items: center; gap: 6px; font: 700 12px/16px var(--font); color: var(--green); margin-top: 2px; }
+  .sure i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: block; }
+  .sure.unsure { color: #7A5F00; }
+  .sure.unsure i { background: var(--yellow); }
+  .q-mark { width: 22px; height: 22px; border-radius: 50%; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font: 700 14px/1 var(--font); }
+  .kv { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-top: 1px solid var(--hairline); margin: 0; }
+  .kv dt { font: 400 14px/20px var(--font); color: var(--muted); }
+  .kv dd { margin: 0; text-align: right; font: 700 16px/22px var(--font); color: var(--ink); }
+  .kv dd small { display: block; font: 400 12px/16px var(--font); color: var(--muted); }
+  .choice { display: flex; gap: 6px; }
+  .choice span {
+    flex: 1; background: var(--white); border: 1px solid #CCCCCC; border-radius: 10px; padding: 7px 10px;
+    font: 700 14px/18px var(--font); color: var(--ink);
+  }
+  .choice span.on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .choice small { display: block; font: 400 12px/16px var(--font); color: var(--muted); }
+  .share { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .share li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; font: 400 14px/19px var(--font); color: var(--ink); }
+  .share .box { width: 16px; height: 16px; margin-top: 2px; border-radius: 3px; background: var(--vf-red); display: grid; place-items: center; }
+  .share .box svg { display: block; }
+
+  /* Shows its working: what TOBi is checking, then a short line saying it's done. */
+  .work { display: inline-flex; align-items: center; gap: 7px; padding: 2px 4px; font: 400 13px/18px var(--font); color: var(--muted); }
+  .work .spin { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #CFCFCF; border-top-color: var(--vf-red); animation: spin .8s linear infinite; }
+  .work.done .spin { display: none; }
+  .work .ok { display: none; }
+  .work.done .ok { display: flex; }
+  .work.doing .label {
+    background: linear-gradient(90deg, var(--muted) 0%, var(--muted) 35%, #B5B5B5 50%, var(--muted) 65%, var(--muted) 100%);
+    background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shimmer 1.4s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shimmer { from { background-position: 110% 0; } to { background-position: -110% 0; } }
+  /* Replies stream in word by word, with a caret while TOBi is still writing. */
+  .bubble.streaming::after { content: ""; display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--vf-red); }
+
+  /* The adviser's name over their messages. Called .agent-name, not .who, so it can't
+     restyle the TOBi name in the header (that clash turned the header text grey). */
+  .row.agent .bubble { box-shadow: inset 3px 0 0 var(--purple); }
+  .agent-name { font: 700 12px/16px var(--font); color: var(--muted); padding-left: 2px; }
+
+  .quick {
+    flex: 0 0 auto; display: flex; flex-wrap: nowrap; gap: 8px; min-height: 46px;
+    padding: 0 10px 10px; background: var(--canvas); overflow: hidden;
+  }
+  .quick span {
+    flex: 0 0 auto; white-space: nowrap; background: var(--white); border-radius: 18px;
+    border: 2px solid #F0C8C8; padding: 6px 14px; font: 400 14px/18px var(--font); color: var(--vf-red);
+  }
+  .composer {
+    height: 58px; background: var(--white); flex: 0 0 auto;
+    display: flex; align-items: center; gap: 10px; padding: 0 12px; box-shadow: 0 -1px 0 var(--line);
+  }
+  .composer .input {
+    flex: 1; min-width: 0; height: 40px; border-radius: 20px; background: var(--canvas);
+    padding: 0 16px; font: 400 17px/40px var(--font); color: var(--muted);
+  }
+  .send { width: 36px; height: 36px; border-radius: 50%; background: var(--vf-red); display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+
+  .face-vid { position: relative; width: 56px; height: 56px; overflow: hidden; flex: 0 0 auto; display: block; background: var(--white); }
+  .face-vid video { position: absolute; display: block; max-width: none; }
+  .face-vid .face { position: absolute; left: 5px; top: 4px; }
+  .face-vid canvas { position: absolute; inset: 0; width: 56px; height: 56px; opacity: 0; pointer-events: none; }
+  .face { display: block; }
+  .face svg { width: 100%; height: 100%; display: block; overflow: visible; transform-box: view-box; }
+  .face.plate { border-radius: 50%; background: var(--white); }
+  /* TOBi's expressions move: these are the kit's own animations. */
+  @keyframes tf-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.4%); } }
+  @keyframes tf-tilt { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+  @keyframes tf-sway { 0%, 100% { transform: translateY(0) rotate(-2.4deg); } 50% { transform: translateY(-3%) rotate(2.4deg); } }
+  @keyframes tf-slump { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(3%) rotate(1deg); } }
+  @keyframes tf-nod { 0%, 8%, 62%, 100% { transform: translateY(0) rotate(0deg); } 22% { transform: translateY(6%) rotate(2deg); } 36% { transform: translateY(-1%) rotate(0deg); } 50% { transform: translateY(5%) rotate(1.5deg); } }
+  @keyframes tf-giggle { 0%, 100% { transform: translateY(0) rotate(-2.6deg) scale(1); } 50% { transform: translateY(-3.4%) rotate(2.6deg) scale(1.02); } }
+  @keyframes tf-pop { 0%, 100% { transform: scale(1) translateY(0); } 16% { transform: scale(1.09) translateY(-2%); } 42% { transform: scale(0.985) translateY(0); } }
+  @keyframes tf-blink { 0%, 90%, 100% { transform: scaleY(1); } 94.5% { transform: scaleY(0.08); } }
+  @keyframes tf-blink-slow { 0%, 82%, 100% { transform: scaleY(1); } 87% { transform: scaleY(0.1); } }
+  @keyframes tf-wink { 0%, 52%, 76%, 100% { transform: scaleY(1); } 60%, 68% { transform: scaleY(0.3); } }
+  @keyframes tf-squint { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.88); } }
+  @keyframes tf-mouth-o { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12, 1.18); } }
+  @keyframes tf-mouth-laugh { 0%, 100% { transform: scaleY(0.92); } 50% { transform: scaleY(1.1); } }
+  @keyframes tf-note-a { 0% { transform: translate(-4px, 16px) scale(0.5); opacity: 0; } 25% { opacity: 1; } 100% { transform: translate(10px, -14px) scale(1.05) rotate(14deg); opacity: 0; } }
+  @keyframes tf-note-b { 0% { transform: translate(6px, 18px) scale(0.5); opacity: 0; } 25% { opacity: 1; } 100% { transform: translate(-10px, -12px) scale(1.05) rotate(-14deg); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row.enter, .typing i, .face svg, .face svg *, .work .spin, .work .label { animation: none !important; }
+    .work.doing .label { color: var(--muted); background: none; }
+  }
+</style>
+</head>
+<body>
+<div class="scaler" id="scaler"><div class="frame" id="frame"></div></div>
+<script>
+(function () {
+  "use strict";
+
+  var ALIAS = {
+    "default": "idle 1", "neutral": "indifferent", "big smile": "laugh",
+    "laughing tears": "laugh tears", "sweating": "laugh sweat",
+    "shocked": "surprise", "confused": "idle 2", "humble": "smug",
+    "smirking": "smirk", "thinking": "idle 2", "happy": "laugh"
+  };
+  var EXPR = {
+    "idle 1":      { motion: "bob",    eyes: "open",   mouth: "smile" },
+    "idle 2":      { motion: "tilt",   eyes: "open",   mouth: "smile", blink: "slow" },
+    "idle 3":      { motion: "sway",   eyes: "open",   mouth: "smile" },
+    "surprise":    { motion: "pop",    eyes: "wide",   mouth: "open" },
+    "whistle":     { motion: "sway",   eyes: "open",   mouth: "whistle", notes: true },
+    "sad":         { motion: "slump",  eyes: "open",   mouth: "frown", blink: "slow" },
+    "wink":        { motion: "bob",    eyes: "wink",   mouth: "smile" },
+    "yes":         { motion: "nod",    eyes: "open",   mouth: "smile" },
+    "indifferent": { motion: "none",   eyes: "open",   mouth: "flat", blink: "slow" },
+    "laugh":       { motion: "giggle", eyes: "squint", mouth: "grin" },
+    "big laugh":   { motion: "giggle", eyes: "chevron", mouth: "laugh" },
+    "smirk":       { motion: "tilt",   eyes: "open",   mouth: "smirk", blink: "slow" },
+    "smug":        { motion: "tilt",   eyes: "squint", mouth: "small" }
+  };
+  var MOTION = {
+    bob: "tf-bob 3.6s ease-in-out infinite",
+    tilt: "tf-tilt 3.4s ease-in-out infinite",
+    sway: "tf-sway 2.8s ease-in-out infinite",
+    slump: "tf-slump 4.4s ease-in-out infinite",
+    nod: "tf-nod 2.2s ease-in-out infinite",
+    giggle: "tf-giggle 0.52s ease-in-out infinite",
+    pop: "tf-pop 2.4s ease-in-out infinite",
+    none: "none"
+  };
+  var P = {
+    jaw: "M90.2614 57.169H89.9774C89.7754 57.331 89.5314 57.494 89.2884 57.656C87.3814 58.873 85.3123 59.887 83.1623 60.577C80.5663 61.429 77.8884 62.078 75.1304 62.524C71.1544 63.173 67.0974 63.498 63.0404 63.498C58.9844 63.498 54.9674 63.173 50.9514 62.524C44.5414 61.429 39.2674 59.522 36.1444 57.128C34.7644 57.088 33.4664 57.737 32.6144 58.791C31.9244 59.684 31.4384 60.739 31.2354 61.834L31.2354 71.732V72.625C31.2354 73.193 31.2764 73.762 31.3164 74.289C32.7364 91.814 48.0704 104.836 65.5964 103.457C81.1334 102.199 93.4664 89.867 94.7644 74.289C94.8054 73.721 94.8454 73.193 94.8454 72.625V71.732V61.875C94.5624 60.779 94.1154 59.725 93.4664 58.832C92.6954 57.858 91.5194 57.25 90.2614 57.169Z",
+    earL: "M23.6085 72.666V72.666C23.2435 71.651 23.0405 70.557 23.0405 69.461V72.666C23.0405 78.265 27.5845 82.808 33.1825 82.808C32.6955 81.51 32.2905 80.171 32.0055 78.792C28.1925 78.63 24.9065 76.236 23.6085 72.666",
+    earR: "M102.391 72.666V72.666C101.093 76.195 97.8074 78.63 94.0344 78.792C93.7504 80.131 93.3444 81.469 92.8574 82.808C98.4564 82.808 102.999 78.265 102.999 72.666V69.461C102.999 70.557 102.797 71.651 102.391 72.666",
+    head: "M23.0405 61.3479C23.0405 61.5909 22.9995 61.7939 22.9995 62.0369V69.5019C22.9995 70.5969 23.2025 71.6929 23.5675 72.7059C24.8665 76.2359 28.1525 78.6699 31.9245 78.8319C31.6005 77.3719 31.3565 75.8709 31.2355 74.3699C31.1897 73.8021 31.1545 73.2749 31.1545 72.7059C31.1135 71.8549 31.1545 71.8149 31.1545 71.8149V61.9159C31.3975 60.8199 31.8435 59.7649 32.5335 58.8729C33.3855 57.7769 34.6835 57.1689 36.0625 57.2099C39.1865 59.5629 44.4605 61.5099 50.8705 62.6049C54.8455 63.2549 58.9025 63.5789 62.9595 63.5789C67.0165 63.5789 71.0325 63.2549 75.0485 62.6049C77.7665 62.1589 80.4445 61.5099 83.0405 60.6579C85.1905 59.9679 87.2595 58.9539 89.1665 57.7369C89.4095 57.5749 89.6535 57.4129 89.8555 57.2499H90.1405C91.3975 57.2909 92.6145 57.8999 93.3855 58.9139C94.0755 59.8059 94.5615 60.8609 94.7645 61.9559V71.8549V72.7469C94.7645 73.3159 94.7245 73.8829 94.6835 74.4099C94.5615 75.9109 94.3185 77.4119 93.9945 78.8729C97.7265 78.6699 101.013 76.2759 102.311 72.7879C102.676 71.7739 102.879 70.6779 102.879 69.6229V65.2009C102.96 64.3899 102.96 63.5379 102.96 62.6049C103.082 40.3739 85.1495 22.4429 63.0405 22.4429C41.3775 22.4429 23.6485 39.6839 23.0405 61.3479Z",
+    mark: "M71.1952 47.6763C70.6272 48.8123 69.8162 49.7853 68.8012 50.5563C66.5292 52.3413 63.5282 52.9093 60.7692 52.0983C58.5782 51.4483 56.6722 50.0293 55.4552 48.1223C54.9272 47.3113 54.5222 46.3783 54.2372 45.4453C54.2372 45.3633 54.1972 45.3233 54.1972 45.2423C54.0352 44.7153 53.9532 44.1463 53.9132 43.6193C53.8722 43.0513 53.8322 42.4833 53.8722 41.9153V41.7533C53.9132 40.9423 54.0352 40.1303 54.2372 39.3603C54.9682 36.4393 56.6312 33.8423 58.9032 31.8953C60.2412 30.7593 61.7832 29.8663 63.4462 29.2183C63.8932 29.0553 64.3802 28.8933 64.8262 28.7713C65.1102 28.6903 65.3942 28.6093 65.6782 28.5283C66.3672 28.3653 67.0572 28.2443 67.7872 28.1633C68.4772 28.0813 69.2072 28.0813 69.8972 28.1633C70.0182 28.1633 70.1402 28.2033 70.2212 28.2443C67.0972 28.9333 64.8262 31.6923 64.8262 34.8973V35.1003C66.0832 35.3433 67.2602 35.7893 68.3552 36.4393C69.2482 37.0073 70.0592 37.6963 70.6682 38.5483L70.7892 38.7513C71.2362 39.4003 71.5602 40.1303 71.8032 40.9013C72.0472 41.6723 72.1692 42.4833 72.2092 43.2953V43.6193C72.1692 44.9983 71.8442 46.4183 71.1952 47.6763M63.0412 26.5803C53.8322 26.5803 46.4082 34.0453 46.4082 43.2133C46.4082 52.3823 53.8722 59.8463 63.0412 59.8463C72.2092 59.8463 79.6742 52.3823 79.6742 43.2133C79.6742 34.0053 72.2092 26.5803 63.0412 26.5803",
+    eyeOpenL: "M45.1653 73.2424V73.2424C45.8683 75.937 48.6008 77.5126 51.2496 76.8484C52.9883 76.3927 54.3954 75.0245 54.8515 73.2424C55.5137 70.5479 53.8995 67.8125 51.2496 67.1484C48.56 66.4862 45.8275 68.1027 45.1653 70.7543C45.0826 71.1702 45 71.584 45 71.9989V72.0817C45 72.4965 45.0826 72.8695 45.1653 73.2424",
+    eyeOpenR: "M71.2068 73.2798C71.9095 75.9475 74.636 77.5075 77.281 76.8499C79.0154 76.3987 80.4209 75.0441 80.8752 73.2798C80.9577 72.9925 80.9994 72.7052 80.9994 72.3764V72.0487C81.0402 69.298 78.8504 67.042 76.0822 67.0006C73.314 66.9601 71.0418 69.1341 71 71.8838C71 72.3764 71.0418 72.8286 71.2068 73.2798",
+    eyeWideL: "M46.146 73.9074V73.9074C46.724 76.8164 48.995 78.5634 51.22 77.8084C52.683 77.3124 53.824 75.8194 54.204 73.9074C54.772 70.9904 53.425 68.0234 51.196 67.2804C48.966 66.5374 46.697 68.2984 46.129 71.2154C46.043 71.6544 46 72.1074 46 72.5614V72.6514C46.011 73.0764 46.06 73.4974 46.146 73.9074",
+    eyeWideR: "M71.7271 73.8975C72.3041 76.8075 74.5761 78.5545 76.8011 77.7995C78.2641 77.3035 79.4051 75.8105 79.7851 73.8975C79.8471 73.5795 79.8881 73.2525 79.9051 72.9235V72.5525C79.9491 69.5435 78.1191 67.0575 75.8181 67.0015C73.5181 66.9445 71.6171 69.3365 71.5741 72.3455C71.5661 72.8705 71.6161 73.3925 71.7231 73.8975H71.7271Z",
+    winkR: "M83.5791 74.8852C82.8821 75.4832 79.7841 73.2662 75.8611 73.3762C71.9381 73.2662 68.8401 75.4832 68.1431 74.8852C67.2971 74.3962 70.2171 70.0032 75.8611 70.0002C81.5061 70.0032 84.4261 74.3972 83.5791 74.8852",
+    squintR: "M83.5794 72.885C82.8834 73.483 79.7844 71.266 75.8614 71.377C71.9394 71.266 68.8404 73.483 68.1444 72.885C67.2974 72.397 70.2164 68.003 75.8614 68C81.5074 68.003 84.4264 72.397 83.5794 72.885",
+    squintL: "M42.1444 72.885C42.8404 73.483 45.9394 71.266 49.8614 71.377C53.7844 71.266 56.8824 73.483 57.5794 72.885C58.4264 72.397 55.5064 68.003 49.8614 68C44.2164 68.003 41.2974 72.397 42.1444 72.885",
+    chevR: "M75.89 78.3824C75.533 78.3824 75.139 78.1394 74.842 77.9574L67.968 73.7254C67.352 73.3464 67 72.7874 67 72.1914C67 71.5944 67.352 71.0354 67.968 70.6564L74.842 66.4244C75.3 66.1434 75.99 65.7194 76.419 66.2624C76.848 66.8064 76.275 67.3794 75.896 67.7584L72.359 71.2964C72.121 71.5334 71.991 71.8514 71.991 72.1914C71.991 72.5304 72.121 72.8484 72.359 73.0864V73.0864L75.896 76.6234C76.275 77.0024 76.848 77.5754 76.419 78.1194C76.267 78.3104 76.084 78.3824 75.89 78.3824",
+    chevL: "M49.6816 78.3824C49.4876 78.3824 49.3046 78.3104 49.1526 78.1194C48.7236 77.5754 49.2966 77.0024 49.6756 76.6234L53.2126 73.0864V73.0864C53.4506 72.8484 53.5806 72.5304 53.5806 72.1914C53.5806 71.8514 53.4506 71.5334 53.2126 71.2964L49.6756 67.7584C49.2966 67.3794 48.7236 66.8064 49.1526 66.2624C49.5826 65.7194 50.2726 66.1434 50.7286 66.4244L57.6036 70.6564C58.2196 71.0354 58.5726 71.5944 58.5726 72.1914C58.5726 72.7874 58.2196 73.3464 57.6036 73.7254L50.7286 77.9574C50.4326 78.1394 50.0386 78.3824 49.6816 78.3824",
+    mSmile: "M80.511 86.456C79.9122 85.848 78.9151 85.848 78.3173 86.456C69.8201 95.057 56.0989 95.057 47.643 86.456C47.0442 85.848 46.0472 85.848 45.4484 86.456C44.8505 87.064 44.8505 88.038 45.4484 88.686L45.529 88.769C55.2218 98.586 70.8977 98.545 80.5906 88.727C81.1491 88.078 81.1491 87.064 80.511 86.456",
+    mSmall: "M62.7837 87.1783C57.7257 87.1783 54.7197 85.6633 54.7197 85.6633C51.9217 84.2553 51.1557 85.1633 53.0177 87.6823C53.0177 87.6823 56.8557 92.8733 62.7837 92.8733C68.7117 92.8733 72.5487 87.6823 72.5487 87.6823C74.4107 85.1633 73.6457 84.2553 70.8477 85.6633C70.8477 85.6633 67.8417 87.1783 62.7837 87.1783",
+    mGrin: "M48 84C49.4144 89.7429 55.592 94 62.9995 94C70.407 94 76.5856 89.7429 78 84C73.5242 85.8294 68.3882 86.7889 62.9995 86.7889C57.6118 86.7889 52.4749 85.8294 48 84M62.9995 97C53.3124 97 45.4063 90.1065 45.0013 81.3065C44.9808 80.8577 45.2004 80.4326 45.5761 80.1929C45.9529 79.9532 46.4262 79.9355 46.8185 80.1475C51.4688 82.6627 57.0639 83.9923 62.9995 83.9923C68.9361 83.9923 74.5312 82.6627 79.1815 80.1475C79.5738 79.9355 80.0481 79.9532 80.4239 80.1929C80.7996 80.4326 81.0192 80.8577 80.9987 81.3065C80.5946 90.1065 72.6886 97 62.9995 97",
+    mLaugh: "M62.9994 98.9998C52.7732 98.9998 44.428 92.0108 44.0015 83.0898C43.9789 82.6348 44.2106 82.2028 44.6072 81.9598C45.0049 81.7168 45.5055 81.6998 45.9186 81.9148C50.8283 84.4648 56.7341 85.8128 62.9994 85.8128C69.2658 85.8128 75.1716 84.4648 80.0803 81.9148C80.4933 81.6998 80.994 81.7168 81.3916 81.9598C81.7882 82.2028 82.02 82.6348 81.9984 83.0898C81.5709 92.0108 73.2257 98.9998 62.9994 98.9998",
+    mOpen: "M62.9956 85.5686C66.2986 85.5686 68.9756 88.2456 68.9756 91.5476C68.9756 94.8506 66.2986 97.5276 62.9956 97.5276C59.6936 97.5276 57.0166 94.8506 57.0166 91.5476C57.0166 88.2456 59.6936 85.5686 62.9956 85.5686",
+    mFlat: "M76.3935 92H49.6054C48.7185 92 48 91.3289 48 90.4995C48 89.6711 48.7185 89 49.6054 89H76.3935C77.2805 89 78 89.6711 78 90.4995C78 91.3289 77.2805 92 76.3935 92",
+    mFrown: "M48.4069 93.7225C48.9157 94.2195 49.7399 94.2195 50.2487 93.7225C57.3039 86.8475 68.7257 86.8475 75.7808 93.7225C76.2927 94.2165 77.1169 94.2125 77.6237 93.7135C78.1192 93.2235 78.1264 92.4385 77.6391 91.9405L77.5643 91.8675C69.4823 84.0285 56.4326 84.0465 48.3731 91.9075C47.8694 92.4095 47.8766 93.2145 48.3895 93.7065C48.3956 93.7125 48.4007 93.7175 48.4069 93.7225",
+    mSmirk: "M69.4492 89.8692C66.7652 91.6762 52.5462 93.1892 52.5462 93.1892C50.5582 93.4412 50.4762 94.1962 52.3642 94.8682C52.3642 94.8682 68.3382 95.0092 71.4832 92.8912C74.6292 90.7742 74.8112 86.6492 74.8112 86.6492C74.9002 84.6472 74.1692 84.4382 73.1882 86.1852C73.1882 86.1852 72.1332 88.0622 69.4492 89.8692",
+    mWhistle: "M66 93C66 94.6568 64.6568 96 63 96C61.3432 96 60 94.6568 60 93C60 91.3432 61.3432 90 63 90C64.6568 90 66 91.3432 66 93"
+  };
+  var NOTE = '<ellipse cx="0" cy="9.6" rx="4.2" ry="3.2" transform="rotate(-20)"></ellipse><rect x="2.9" y="-4" width="1.9" height="14" rx="0.95"></rect><path d="M4.8 -4 C8.4 -2.9 10 -0.8 9.7 2.6 C8.6 0.2 6.7 -0.7 4.8 0.2 Z"></path>';
+
+  function path(d, fill, style) {
+    return '<path fill-rule="evenodd" clip-rule="evenodd" d="' + d + '" fill="' + fill + '"' +
+      (style ? ' style="' + style + '"' : "") + '></path>';
+  }
+  function faceSVG(expression, animated, badge) {
+    var raw = String(expression || "idle 1").toLowerCase().trim();
+    var key = EXPR[raw] ? raw : (ALIAS[raw] || "idle 1");
+    var c = EXPR[key];
+    var on = animated !== false;
+    var a = function (v) { return on ? v : "none"; };
+    var blink = c.blink === "slow" ? "tf-blink-slow 7.2s ease-in-out infinite" : "tf-blink 5.4s ease-in-out infinite";
+    var box = badge ? "13 13 100 100" : "0 0 126 126";
+    var s = '<svg viewBox="' + box + '" style="transform-origin: 63px 80px; animation: ' + a(MOTION[c.motion] || "none") + ';">';
+    s += path(P.jaw, "#EBEBEB") + path(P.earL, "#990000") + path(P.earR, "#990000") + path(P.head, "#E60000") + path(P.mark, "#FFFFFF");
+    var eyeStyle = "transform-box: view-box; transform-origin: 63px 72px; animation: " + a(blink) + ";";
+    if (c.eyes === "open") {
+      s += '<g fill="#4A4D4E" style="' + eyeStyle + '">' + path(P.eyeOpenL, "#4A4D4E") + path(P.eyeOpenR, "#4A4D4E") + '</g>';
+    } else if (c.eyes === "wide") {
+      s += '<g fill="#4A4D4E">' + path(P.eyeWideL, "#4A4D4E") + path(P.eyeWideR, "#4A4D4E") + '</g>';
+    } else if (c.eyes === "wink") {
+      s += '<g fill="#4A4D4E">' + path(P.eyeOpenL, "#4A4D4E") +
+        path(P.winkR, "#4A4D4E", "transform-box: view-box; transform-origin: 76px 72px; animation: " + a("tf-wink 3.4s ease-in-out infinite") + ";") + '</g>';
+    } else if (c.eyes === "squint") {
+      s += '<g style="transform-box: view-box; transform-origin: 63px 71px; animation: ' + a("tf-squint 0.52s ease-in-out infinite") + ';">' +
+        path(P.squintL, "#4A4D4E") + path(P.squintR, "#4A4D4E") + '</g>';
+    } else if (c.eyes === "chevron") {
+      s += '<g>' + path(P.chevL, "#4A4D4E") + path(P.chevR, "#4A4D4E") + '</g>';
+    }
+    if (c.mouth === "smile") s += path(P.mSmile, "#4A4D4E");
+    if (c.mouth === "small") s += path(P.mSmall, "#4A4D4E");
+    if (c.mouth === "grin") s += path(P.mGrin, "#4A4D4E", "transform-box: view-box; transform-origin: 63px 84px; animation: " + a("tf-mouth-laugh 0.52s ease-in-out infinite") + ";");
+    if (c.mouth === "laugh") s += path(P.mLaugh, "#4A4D4E", "transform-box: view-box; transform-origin: 63px 84px; animation: " + a("tf-mouth-laugh 0.52s ease-in-out infinite") + ";");
+    if (c.mouth === "open") s += path(P.mOpen, "#4A4D4E", "transform-box: view-box; transform-origin: 63px 91.5px; animation: " + a("tf-mouth-o 2.4s ease-in-out infinite") + ";");
+    if (c.mouth === "flat") s += path(P.mFlat, "#4A4D4E");
+    if (c.mouth === "frown") s += path(P.mFrown, "#4A4D4E");
+    if (c.mouth === "smirk") s += path(P.mSmirk, "#4A4D4E");
+    if (c.mouth === "whistle") s += path(P.mWhistle, "#4A4D4E", "transform-box: view-box; transform-origin: 63px 93px; animation: " + a("tf-mouth-o 2.2s ease-in-out infinite") + ";");
+    if (c.notes) {
+      s += '<g fill="#4A4D4E">' +
+        '<g style="transform-box: view-box; transform-origin: 114px 22px; animation: ' + a("tf-note-a 2.6s ease-out infinite") + ';"><g transform="translate(112 12) scale(2.1)">' + NOTE + '</g></g>' +
+        '<g style="transform-box: view-box; transform-origin: 8px 28px; animation: ' + a("tf-note-b 2.6s ease-out 1.1s infinite") + ';"><g transform="translate(2 18) scale(1.8)">' + NOTE + '</g></g>' +
+        '</g>';
+    }
+    return s + "</svg>";
+  }
+  function face(size, expression, opts) {
+    opts = opts || {};
+    var el = document.createElement("span");
+    el.className = "face" + (opts.plate ? " plate" : "");
+    el.style.width = size + "px";
+    el.style.height = size + "px";
+    el.style.flex = "0 0 auto";
+    el.setAttribute("aria-hidden", "true");
+    el.innerHTML = faceSVG(expression, opts.animated !== false, !!opts.plate);
+    return el;
+  }
+
+  function h(tag, attrs) {
+    var el = document.createElement(tag), k, i;
+    for (k in attrs || {}) {
+      if (k === "class") el.className = attrs[k];
+      else if (k === "text") el.textContent = attrs[k];
+      else el.setAttribute(k, attrs[k]);
+    }
+    for (i = 2; i < arguments.length; i++) {
+      var c = arguments[i];
+      if (c == null || c === false) continue;
+      (Array.isArray(c) ? c : [c]).forEach(function (n) { if (n) el.appendChild(typeof n === "string" ? document.createTextNode(n) : n); });
+    }
+    return el;
+  }
+  function icon(markup, size) {
+    var s = h("span", { "aria-hidden": "true", style: "display:flex;flex:0 0 auto" });
+    s.innerHTML = '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" style="display:block">' + markup + "</svg>";
+    return s;
+  }
+  var ICON = {
+    close: '<path d="M6 6 L18 18 M18 6 L6 18" stroke="#333333" stroke-width="1.6" stroke-linecap="round"/>',
+    plus: '<path d="M12 5 L12 19 M5 12 L19 12" stroke="#666666" stroke-width="1.5" stroke-linecap="round"/>',
+    mic: '<rect x="9.5" y="3" width="5" height="10.5" rx="2.5" fill="#666666"/><path d="M7 12 A5 5 0 0 0 17 12" stroke="#666666" stroke-width="1.5" stroke-linecap="round"/><path d="M12 17 L12 20.5 M9 20.5 L15 20.5" stroke="#666666" stroke-width="1.5" stroke-linecap="round"/>',
+    send: '<path d="M4 12 L20 5 L13 20 L11.5 13.5 Z" fill="#FFFFFF"/>',
+    ticks: '<path d="M1.5 12.6 L6.2 17.3 L13.4 7.4" stroke="#428600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.6 12.6 L15.3 17.3 L22.5 7.4" stroke="#428600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    check: '<circle cx="12" cy="12" r="10" fill="#428600"/><path d="M7 12.5 L10.5 16 L17 8.5" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    tick: '<path d="M5 12.5 L10 17 L19 7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
+  };
+  function links(labels) {
+    return labels.map(function (l) { return [h("span", { class: "rule" }), h("button", { type: "button", class: "card-link", tabindex: "-1", text: l })]; })
+      .reduce(function (a, b) { return a.concat(b); }, []);
+  }
+
+  /* ---------- the three cards this journey uses, all from the TOBi kit ---------- */
+  var state;
+  var CARDS = {
+    found: function () {
+      return h("div", { class: "card" },
+        h("div", { class: "body", style: "gap:2px" },
+          h("h4", { text: "What I found" }),
+          h("div", { class: "found-row" },
+            icon(ICON.check, 22),
+            h("span", { class: "amt", text: "£10.00" }),
+            h("p", { text: "Eight calls to 0870 numbers, which your plan doesn’t cover" }),
+            h("span", { class: "sure" }, h("i"), "Sure: it matches your bill")),
+          h("div", { class: "found-row" },
+            h("span", { class: "q-mark", "aria-hidden": "true", text: "?" }),
+            h("span", { class: "amt", text: "£2.50" }),
+            h("p", { text: "One charge I can’t match to anything" }),
+            h("span", { class: "sure unsure" }, h("i"), "Not sure: a person should check")),
+          h("span", { class: "src", style: "margin-top:4px", text: "From your 5 November bill and call log" })),
+        links(["Show the calls", "That’s not right"]));
+    },
+    check: function () {
+      var done = state.confirmed;
+      return h("div", { class: "card" },
+        h("div", { class: "body", style: "gap:0" },
+          h("h4", { text: "Check before I change it" }),
+          h("p", { style: "margin-bottom:6px", text: "Nothing changes until you confirm." }),
+          h("dl", { style: "margin:0" },
+            h("div", { class: "kv" }, h("dt", { text: "Plan" }), h("dd", {}, "Red Extra 5GB", h("small", { text: "was Red 2GB" }))),
+            h("div", { class: "kv" }, h("dt", { text: "Calls" }), h("dd", {}, "Unlimited", h("small", { text: "including 0870 numbers" }))),
+            h("div", { class: "kv" }, h("dt", { text: "Monthly" }), h("dd", {}, "£16", h("small", { text: "was £14" })))),
+          h("p", { style: "padding:8px 0 6px;border-top:1px solid var(--hairline)", text: "When it starts" }),
+          h("div", { class: "choice" },
+            h("span", { class: "on" }, "5 December", h("small", { text: "Next bill" })),
+            h("span", {}, "Today", h("small", { text: "Part-month charge" }))),
+          h("span", { class: "src", style: "margin:10px 0 2px", text: "Your phone and number stay the same." })),
+        h("button", { type: "button", class: "card-cta" + (done ? " done" : ""), tabindex: "-1", text: done ? "Confirmed" : "Confirm change" }),
+        done ? null : links(["Not now"]));
+    },
+    handover: function () {
+      var sent = state.sent;
+      var items = [
+        "Your 5 November bill is £12.50 over plan",
+        "£10.00 is eight calls to 0870 numbers",
+        "You’ve moved to Red Extra 5GB from 5 December",
+        "The £2.50 charge I couldn’t explain"
+      ];
+      return h("div", { class: "card" },
+        h("div", { class: "body" },
+          h("span", { style: "display:inline-flex;align-items:center;gap:7px;font:700 16px/22px var(--font);color:var(--ink)" },
+            face(22, "default"), "Passing you to an adviser"),
+          h("span", { class: "wait" }, h("i"), "About four minutes to connect"),
+          h("p", { style: "color:var(--ink)", text: "I’ll share this, so you don’t have to explain it again:" }),
+          h("ul", { class: "share", "aria-label": "What TOBi will share, all ticked" }, items.map(function (t) {
+            return h("li", {}, h("span", { class: "box" }, icon(ICON.tick, 12)), h("span", { text: t }));
+          })),
+          h("span", { class: "src", text: "Untick anything you’d rather not share." })),
+        h("button", { type: "button", class: "card-cta" + (sent ? " done" : ""), tabindex: "-1", text: sent ? "Sent" : "Send and connect" }));
+    }
+  };
+
+  /* ---------- the journey, one step per slide ---------- */
+  // Each step can change earlier cards (set), then adds its messages one at a time, then shows its quick replies.
+  var GREETING = { from: "tobi", face: "idle 1", text: "Hi, I’m TOBi. How can I help you today?" };
+  var STEPS = [
+    { msgs: [{ from: "me", text: "Why is my bill higher?" }] },
+    { msgs: [
+        { from: "tobi", text: "Your 5 November bill is £12.50 over your plan. I can explain most of it, but not all of it." },
+        { from: "work", doing: "Checking your 5 November bill and call log", done: "Checked your bill and call log" },
+        { from: "tobi", card: "found" }],
+      quick: ["Stop this happening", "Ask about the £2.50", "Show the calls"] },
+    { msgs: [
+        { from: "me", text: "Stop this happening" },
+        { from: "tobi", text: "A plan with unlimited calls would cover those numbers. Here’s the change I’d make. Check it before I do anything." },
+        { from: "work", doing: "Comparing plans that cover 0870 calls", done: "Compared four plans" },
+        { from: "tobi", card: "check" }] },
+    { set: { confirmed: true },
+      msgs: [
+        { from: "me", text: "Confirm change" },
+        { from: "tobi", face: "yes", text: "Done. Your new plan starts on 5 December. I’ve emailed you the details." }],
+      quick: ["Ask about the £2.50", "Thanks"] },
+    { msgs: [
+        { from: "me", text: "Ask about the £2.50" },
+        { from: "tobi", face: "sad", text: "I can’t explain the £2.50 from what I can see, so a person should look at it." },
+        { from: "work", doing: "Writing a summary for the adviser", done: "Summary ready" },
+        { from: "tobi", card: "handover" }] },
+    { set: { sent: true },
+      msgs: [
+        { from: "me", text: "Send and connect" },
+        { from: "tobi", face: "laugh", notice: "Adviser joined", text: "You’re now talking to Phillip from Customer Support. He has TOBi’s summary." },
+        { from: "agent", name: "Phillip · Customer Support", text: "Hi, I’ve read the summary, so you don’t need to explain it again. The £2.50 is a paper bill charge. I’ll refund it and switch you to online bills." }],
+      quick: ["Thanks", "Back to TOBi"] }
+  ];
+  var TIMES = ["12:00", "12:00", "12:01", "12:01", "12:02", "12:03"];
+
+  /* ---------- the phone ---------- */
+  var headFace;
+  // The header face is cut from the expressions video on vodafone.paultinker.uk: all 21 expressions
+  // play in a 6 x 4 grid, and the header shows just the cell for TOBi's current one.
+  var CELLS = ["idle 1", "idle 2", "idle 3", "idle 4", "surprise laugh", "surprise", "whistle", "sad", "wink", "yes", "no",
+    "big laugh", "indifferent", "angry", "laugh", "laugh tears", "laugh sweat", "smirk", "smug", "blush", "grumpy"];
+  var FACE_PX = 56, CELL_PX = 124;
+  // The drawn face sits underneath, in case the video can't play.
+  var faceStill = face(46, "idle 1", { animated: false });
+  // When TOBi changes expression, the old one fades out over the new one instead of cutting.
+  var faceFade = h("canvas", { width: "124", height: "124" });
+  var faceNow = "";
+  var faceVideo = h("video", { src: "tobi-expressions.mp4", muted: "", loop: "", playsinline: "", preload: "auto" });
+  faceVideo.muted = true;
+  faceVideo.style.width = (1600 * FACE_PX / CELL_PX) + "px";
+  var frame = document.getElementById("frame");
+  var scaler = document.getElementById("scaler");
+  frame.appendChild(h("div", { class: "top" },
+    h("div", { class: "statusbar", "aria-hidden": "true" },
+      h("span", { style: "flex:1", text: "●●●●●" }), h("span", { class: "mid", text: "12:03" }), h("span", { class: "end", style: "flex:1", text: "100%" })),
+    h("div", { class: "chat-header" },
+      headFace = h("span", { class: "face-vid", "aria-hidden": "true" }, faceStill, faceVideo, faceFade),
+      h("span", { class: "who" }, h("span", { class: "name", text: "TOBi" }), h("span", { class: "sub", text: "AI assistant · can make mistakes" })),
+      icon(ICON.close, 20))));
+  var thread = h("div", { class: "thread", role: "log", "aria-label": "Conversation with TOBi" });
+  var quick = h("div", { class: "quick", "aria-label": "Suggested replies" });
+  frame.appendChild(thread);
+  frame.appendChild(quick);
+  frame.appendChild(h("div", { class: "composer", "aria-hidden": "true" },
+    icon(ICON.plus, 24), icon(ICON.mic, 22), h("span", { class: "input", text: "Ask TOBi anything" }),
+    h("span", { class: "send" }, icon(ICON.send, 20))));
+
+  function fit() {
+    var z = window.innerWidth / 375;
+    scaler.style.transform = "scale(" + z + ")";
+    frame.style.height = (window.innerHeight / z) + "px";
+  }
+  window.addEventListener("resize", fit);
+  fit();
+
+  function rowFor(m, time, doing) {
+    if (m.from === "work") {
+      return h("div", { class: "row" }, h("span", { class: "work " + (doing ? "doing" : "done") },
+        h("span", { class: "spin", "aria-hidden": "true" }), h("span", { class: "ok" }, icon(ICON.check, 14)),
+        h("span", { class: "label", text: doing ? m.doing : m.done })));
+    }
+    if (m.notice) {
+      return h("div", { class: "row" }, h("div", { class: "stack" }, h("div", { class: "notice" },
+        h("span", { class: "tag" }, h("b"), m.notice, h("span", { class: "t", text: time })), h("p", { text: m.text }))));
+    }
+    if (m.card) return h("div", { class: "row" }, h("div", { class: "stack" }, CARDS[m.card]()));
+    if (m.from === "agent") {
+      return h("div", { class: "row agent" }, h("div", { class: "stack" },
+        h("span", { class: "agent-name", text: m.name }), h("span", { class: "bubble", text: m.text })));
+    }
+    var stack = h("div", { class: "stack" }, h("span", { class: "bubble", text: m.text }));
+    if (m.from === "me") {
+      stack.appendChild(h("span", { class: "meta" }, time, icon(ICON.ticks, 17)));
+      return h("div", { class: "row me" }, stack);
+    }
+    return h("div", { class: "row" }, stack);
+  }
+
+  // TOBi's expression in the header follows the conversation.
+  function setFace(expr) {
+    var i = CELLS.indexOf(expr);
+    if (i < 0 || expr === faceNow) return;
+    var was = CELLS.indexOf(faceNow);
+    faceNow = expr;
+    if (was >= 0 && faceVideo.readyState >= 2 && !reduce.matches) {
+      var ctx = faceFade.getContext("2d");
+      ctx.clearRect(0, 0, 124, 124);
+      ctx.drawImage(faceVideo, 132.5 + 266.7 * (was % 6) - CELL_PX / 2, 114 + 211.3 * Math.floor(was / 6) - CELL_PX / 2, CELL_PX, CELL_PX, 0, 0, 124, 124);
+      faceFade.style.transition = "none";
+      faceFade.style.opacity = "1";
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        faceFade.style.transition = "opacity .6s ease";
+        faceFade.style.opacity = "0";
+      }); });
+    }
+    faceStill.innerHTML = faceSVG(expr, false, false);
+    if (faceVideo.paused && !reduce.matches) faceVideo.play().catch(function () {});
+    var k = FACE_PX / CELL_PX;
+    var cx = 132.5 + 266.7 * (i % 6), cy = 114 + 211.3 * Math.floor(i / 6);
+    faceVideo.style.left = (-(cx - CELL_PX / 2) * k) + "px";
+    faceVideo.style.top = (-(cy - CELL_PX / 2) * k) + "px";
+  }
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var timers = [];
+  var run = 0;
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function toBottom() { thread.scrollTo({ top: thread.scrollHeight, behavior: reduce.matches ? "auto" : "smooth" }); }
+  function showQuick(list) {
+    quick.textContent = "";
+    (list || []).forEach(function (q) { quick.appendChild(h("span", { text: q })); });
+  }
+
+  // Shows the conversation as it stands at the end of step n (0 to 5), adding that step's messages
+  // one by one. done() is called once the last one is in.
+  function lastFace(list) {
+    for (var i = list.length - 1; i >= 0; i--) if (list[i].face) return list[i].face;
+    return "idle 1";
+  }
+
+  function go(n, done, instant) {
+    timers.forEach(clearTimeout); timers = [];
+    var me = ++run;
+    n = Math.max(0, Math.min(STEPS.length - 1, n));
+    state = { confirmed: false, sent: false };
+    var past = [GREETING];
+    var i;
+    for (i = 0; i < n; i++) past = past.concat(STEPS[i].msgs.map(function (m) { m.step = i; return m; }));
+    for (i = 0; i <= n; i++) if (STEPS[i].set) Object.assign(state, STEPS[i].set);
+    thread.textContent = "";
+    past.forEach(function (m) { thread.appendChild(rowFor(m, TIMES[m.step || 0])); });
+    var step = STEPS[n];
+    var lastQuick = n ? STEPS.slice(0, n).reverse().find(function (s) { return s.quick; }) : null;
+    var still = instant || reduce.matches;
+    if (still) {
+      step.msgs.forEach(function (m) { thread.appendChild(rowFor(m, TIMES[n])); });
+      setFace(lastFace(past.concat(step.msgs)));
+      showQuick(step.quick || []);
+      thread.scrollTop = thread.scrollHeight;
+      if (done) done();
+      return;
+    }
+    // The previous step's quick replies stay up until the customer answers.
+    showQuick(n === 0 ? ["Why is my bill higher?", "See latest bill", "Change my plan"] : (n && STEPS[n - 1].quick) || []);
+    setFace(lastFace(past));
+    thread.scrollTop = thread.scrollHeight;
+    var t = 450;
+    function add(row) {
+      var typing = thread.querySelector(".typing-row");
+      if (typing) typing.remove();
+      row.classList.add("enter");
+      thread.appendChild(row);
+      toBottom();
+      return row;
+    }
+    function dots() {
+      thread.appendChild(h("div", { class: "row typing-row", "aria-hidden": "true" }, h("span", { class: "typing" }, h("i"), h("i"), h("i"))));
+      toBottom();
+    }
+    step.msgs.forEach(function (m) {
+      var guard = function (fn) { return function () { if (me === run) fn(); }; };
+      if (m.from === "me") {
+        later(guard(function () { showQuick([]); add(rowFor(m, TIMES[n])); }), t);
+        t += 500;
+      } else if (m.from === "work") {
+        // What it's checking, then a short line saying it's done.
+        var row;
+        later(guard(function () { row = add(rowFor(m, TIMES[n], true)); setFace(m.face); }), t);
+        t += 1300;
+        later(guard(function () { row.replaceWith(rowFor(m, TIMES[n])); }), t);
+        t += 250;
+      } else if (m.from === "tobi" && m.text && !m.notice) {
+        // TOBi writes its reply as it goes, word by word.
+        var words = m.text.split(" ");
+        var bubble;
+        later(guard(dots), t);
+        t += 450;
+        later(guard(function () {
+          var r = rowFor({ from: "tobi", face: m.face, text: "" }, TIMES[n]);
+          bubble = r.querySelector(".bubble");
+          bubble.classList.add("streaming");
+          add(r);
+          setFace(m.face);
+        }), t);
+        words.forEach(function (w, i) {
+          later(guard(function () {
+            bubble.textContent = words.slice(0, i + 1).join(" ");
+            if (i === words.length - 1) bubble.classList.remove("streaming");
+            thread.scrollTop = thread.scrollHeight;
+          }), t + 60 + i * 55);
+        });
+        t += 60 + words.length * 55 + 350;
+      } else if (m.from === "agent") {
+        // A person types and sends a whole message, so the adviser keeps the typing dots.
+        later(guard(dots), t);
+        t += 1000;
+        later(guard(function () { add(rowFor(m, TIMES[n])); }), t);
+        t += 650;
+      } else {
+        later(guard(function () { add(rowFor(m, TIMES[n])); setFace(m.face); }), t);
+        t += 650;
+      }
+    });
+    later(function () { if (me !== run) return; showQuick(step.quick || []); if (done) done(); }, t);
+  }
+
+  function playFace() {
+    if (reduce.matches) { faceVideo.pause(); faceVideo.currentTime = 0.5; }
+    else faceVideo.play().catch(function () {});
+  }
+  reduce.addEventListener("change", playFace);
+  // Browsers hold back video in a hidden tab, so try again whenever the page is shown or TOBi changes face.
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) playFace(); });
+  faceVideo.addEventListener("canplay", playFace, { once: true });
+  playFace();
+
+  window.tobiDemo = { go: go, steps: STEPS.length };
+  go(0, null, true);
+  try { window.parent.postMessage("tobi-ready", location.origin); } catch (e) {}
+})();
+</script>
+</body>
+</html>
