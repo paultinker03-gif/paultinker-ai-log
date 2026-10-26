@@ -4,62 +4,48 @@
     <title>Paul Tinker AI log</title>
     <link>https://ai.paultinker.uk/</link>
     <atom:link href="https://ai.paultinker.uk/feed.xml" rel="self" type="application/rss+xml"/>
-    <description>A working log of designing and building digital products with AI: design systems rebuilt in code, products shipped end to end, and what changes when AI is part of the system.</description>
+    <description>Designing and building digital products with AI: Kavvi and Edgey shipped to both app stores, TOBi rethought for generative AI, and design systems rebuilt with AI.</description>
     <language>en-gb</language>
     <lastBuildDate>Mon, 12 Oct 2026 09:00:00 GMT</lastBuildDate>
     <item>
-      <title>TOBi, again</title>
-      <link>https://ai.paultinker.uk/2026-10-12/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-10-12/</guid>
+      <title>TOBi, rethought for generative AI</title>
+      <link>https://ai.paultinker.uk/tobi/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/tobi/</guid>
       <pubDate>Mon, 12 Oct 2026 09:00:00 GMT</pubDate>
       <description>I designed TOBi, Vodafone's chatbot, before today's generative models. Looking at it again: what changes when the AI can say anything, and what doesn't.</description>
     </item>
     <item>
-      <title>Kavvi: a renewals app, designed and shipped end to end</title>
-      <link>https://ai.paultinker.uk/2026-10-05/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-10-05/</guid>
+      <title>Kavvi: a product designed and shipped end to end</title>
+      <link>https://ai.paultinker.uk/kavvi/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/kavvi/</guid>
       <pubDate>Mon, 05 Oct 2026 09:00:00 GMT</pubDate>
       <description>A renewals app for families: design system, iPhone and Android apps, docs, Storybook and a live site. I made the decisions; AI did the building.</description>
     </item>
     <item>
       <title>Governance in an AI-native world</title>
-      <link>https://ai.paultinker.uk/2026-10-01/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-10-01/</guid>
+      <link>https://ai.paultinker.uk/request-desk/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/request-desk/</guid>
       <pubDate>Thu, 01 Oct 2026 09:00:00 GMT</pubDate>
       <description>Governance in an AI-native world: an agent that decides before it builds, a front door anyone in the company can use, and a person who still makes the call.</description>
     </item>
     <item>
-      <title>Edgey: where the design work goes when building takes a day</title>
-      <link>https://ai.paultinker.uk/2026-09-24/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-09-24/</guid>
+      <title>Edgey: a game from concept to both stores</title>
+      <link>https://ai.paultinker.uk/edgey/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/edgey/</guid>
       <pubDate>Thu, 24 Sep 2026 09:00:00 GMT</pubDate>
-      <description>An idea I'd had for years, taken all the way to Google Play: app, site, brand and backend. I designed it and directed the build, and the first time the whole product was mine.</description>
+      <description>An idea I'd had for years, taken all the way to Google Play and the App Store: app, site, brand and backend. I designed it and directed the build, and the first time the whole product was mine.</description>
     </item>
     <item>
-      <title>Two design systems, out of design and into code</title>
-      <link>https://ai.paultinker.uk/2026-09-21/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-09-21/</guid>
+      <title>Source and Keystone: two design systems, rebuilt with AI</title>
+      <link>https://ai.paultinker.uk/source-and-keystone/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/source-and-keystone/</guid>
       <pubDate>Mon, 21 Sep 2026 09:00:00 GMT</pubDate>
-      <description>Out of design artifacts and into code: the two largest design systems I've worked on rebuilt as real front-ends, prototypes running on them, and a product idea built from scratch.</description>
-    </item>
-    <item>
-      <title>Two design systems rebuilt as design artifacts</title>
-      <link>https://ai.paultinker.uk/2026-09-18/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-09-18/</guid>
-      <pubDate>Fri, 18 Sep 2026 09:00:00 GMT</pubDate>
-      <description>Two design systems rebuilt as interactive design artifacts, four product experiences on top of them, and audits that run while you work.</description>
-    </item>
-    <item>
-      <title>Rebuilding my portfolio homepage in Claude Design</title>
-      <link>https://ai.paultinker.uk/2026-09-07/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-09-07/</guid>
-      <pubDate>Mon, 07 Sep 2026 09:00:00 GMT</pubDate>
-      <description>Rebuilt my portfolio homepage in Claude Design and pushed it live: 3D assets, motion, and how little it now costs to try a direction.</description>
+      <description>The two largest design systems I've worked on, rebuilt first as interactive design artifacts, then as real front-end code with Storybook and docs from one source.</description>
     </item>
     <item>
       <title>Bridge: an AI-native product and design system</title>
-      <link>https://ai.paultinker.uk/2026-08-28/</link>
-      <guid isPermaLink="true">https://ai.paultinker.uk/2026-08-28/</guid>
+      <link>https://ai.paultinker.uk/bridge/</link>
+      <guid isPermaLink="true">https://ai.paultinker.uk/bridge/</guid>
       <pubDate>Fri, 28 Aug 2026 09:00:00 GMT</pubDate>
       <description>An AI-native product and design system: a multi-brand e-commerce prototype, designed and built through prompts.</description>
     </item>
