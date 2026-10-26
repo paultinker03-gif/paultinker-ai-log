@@ -478,3 +478,13 @@ html:not(.js) .chat-phone { display: none; }
 .nav .nav-icon { flex: none; width: 36px; height: 36px; border-radius: 9px; }
 .nav .nav-text { min-width: 0; }
 .nav .nav-icon[src*="/tobi.png"] { outline: 1px solid rgba(0, 0, 0, 0.1); outline-offset: -1px; }
+
+/* Drawn arrows and close cross, the same as the case studies */
+.carousel-controls .carousel-prev, .carousel-controls .carousel-next, .lightbox-nav button { display: inline-flex; align-items: center; justify-content: center; padding: 0; font-size: 0 !important; -webkit-appearance: none; appearance: none; }
+.carousel-prev::before, .carousel-next::before, .lightbox-nav button::before { content: ""; width: 18px; height: 18px; background: currentColor; }
+.carousel-prev::before, .lightbox-prev::before, .arrow-prev { -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 12H4M11 5l-7 7 7 7'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 12H4M11 5l-7 7 7 7'/%3E%3C/svg%3E") center / contain no-repeat; }
+.carousel-next::before, .lightbox-next::before, .arrow-next { -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h16M13 5l7 7-7 7'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h16M13 5l7 7-7 7'/%3E%3C/svg%3E") center / contain no-repeat; }
+.lightbox-close::before { width: 16px !important; height: 16px !important; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E") center / contain no-repeat; }
+.pager .arrow { display: inline-block; width: 1em; height: 1em; background: currentColor; vertical-align: -0.125em; }
+.pager .arrow-prev { margin-right: 0.4em; }
+.pager .arrow-next { margin-left: 0.4em; }
