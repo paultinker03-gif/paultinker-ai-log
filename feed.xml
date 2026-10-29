@@ -40,7 +40,7 @@
       <link>https://ai.paultinker.uk/source-and-keystone/</link>
       <guid isPermaLink="true">https://ai.paultinker.uk/source-and-keystone/</guid>
       <pubDate>Mon, 21 Sep 2026 09:00:00 GMT</pubDate>
-      <description>The two largest design systems I've worked on, rebuilt first as interactive design artifacts, then as working code prototypes with Storybook and docs from one source, all built by prompting.</description>
+      <description>The two largest design systems I've worked on, rebuilt first as interactive design artifacts, then as real front-end code with Storybook and docs from one source.</description>
     </item>
     <item>
       <title>Bridge: an AI-native product and design system</title>
